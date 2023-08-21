@@ -1,0 +1,44 @@
+.sidebar {
+  flex: 0 1 104px;
+  padding: 40px 32px 48px 40px;
+  background-color: #050504;
+  display: flex;
+  flex-direction: column;
+  row-gap: 48px;
+  &__logo{
+    font-family: Bebas Neue;
+    font-size: 40px;
+    color: #fff;
+    font-weight: 700;
+    display: block;
+  }
+  .menu{
+    flex: 1 1 auto;
+    &__list{
+      display: grid;
+      grid-template-columns: 1;
+      gap: 32px;
+
+    }      
+    &__link{
+      color: #3C4858;
+      overflow: hidden;
+      transition: color 0.3s ease 0s;
+      &:hover {
+        color: #fff;
+      }
+    }   
+    &__linkCircle{
+      display: inline-block;
+      background-color: #3C4858;
+      width: 32px;
+      height: 32px;
+      color: #fff;
+      border-radius: 50%;
+      transition: background 0.3s ease 0s;
+      &:hover {
+        background-color: #fff;
+      }
+      }
+  }
+}
