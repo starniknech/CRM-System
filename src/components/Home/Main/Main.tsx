@@ -5,10 +5,10 @@ import MainContent from "./MainContent/MainContent";
 
 const Main = () => {
   return (
-    <main className={styles.main}>
+    <div className={styles.main}>
       <Filters />
       <MainContent />
-    </main>
+    </div>
   );
 }
 

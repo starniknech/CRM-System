@@ -13,7 +13,7 @@ export const fetchLoginData = createAsyncThunk(
       
       window.localStorage.setItem('user', JSON.stringify(response));
       window.localStorage.setItem("isLoggedIn", 'true');
-
+      
       return response;
     } catch (e) {
       return thunkAPI.rejectWithValue('Некорректный логин или пароль');

@@ -27,7 +27,7 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<ILogin> = async (userCredentials) => {
     const result = await dispatch(fetchLoginData(userCredentials))
-    if (result.payload) {
+    if (result.payload && result.payload !== 'Некорректный логин или пароль') {
       navigate('/home');
     }
   }
