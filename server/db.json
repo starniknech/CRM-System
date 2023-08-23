@@ -1,7 +1,186 @@
 {
-  "auth": {
-    "login": "typicode",
-    "password": "1234567@",
-    "rememberMe": true
-  }
+  "people": [
+    {
+      "name": "Александр Соломонов",
+      "position": "Начальник IT отдела",
+      "company": "Global Solutions",
+      "isFavourite": "true",
+      "avatar": "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000"
+    },
+    {
+      "name": "Мария Иванова",
+      "position": "Офис менеджер",
+      "company": "Global Solutions",
+      "isFavourite": "false",
+      "avatar": "https://cdn-icons-png.flaticon.com/512/6596/6596121.png"
+    },
+    {
+      "name": "Михаил Бегунов",
+      "position": "Охранник",
+      "company": "Global Solutions Development",
+      "isFavourite": "true",
+      "avatar": "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000"
+    },
+    {
+      "name": "Дмитрий Ким",
+      "position": "Офис менеджер",
+      "company": "Global Solutions",
+      "isFavourite": "false",
+      "avatar": "https://e7.pngegg.com/pngimages/799/987/png-clipart-computer-icons-avatar-icon-design-avatar-heroes-computer-wallpaper-thumbnail.png"
+    },
+    {
+      "name": "Артем Смирнов",
+      "position": "Начальник IT отдела",
+      "company": "IT Formula",
+      "isFavourite": "false",
+      "avatar": "https://cdn-icons-png.flaticon.com/512/6596/6596121.png"
+    },
+    {
+      "name": "Вадим Кузнецовв",
+      "position": "Frontend разработчик",
+      "company": "Promo Republic",
+      "isFavourite": "true",
+      "avatar": "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000"
+    },
+    {
+      "name": "Владимир Попов",
+      "position": "Маркетолог / SMM специалист",
+      "company": "IT Formula",
+      "isFavourite": "false",
+      "avatar": "https://e7.pngegg.com/pngimages/799/987/png-clipart-computer-icons-avatar-icon-design-avatar-heroes-computer-wallpaper-thumbnail.png"
+    },
+    {
+      "name": "Валентин Васильев",
+      "position": "Frontend разработчик",
+      "company": "Promo Republic",
+      "isFavourite": "false",
+      "avatar": "https://cdn-icons-png.flaticon.com/512/6596/6596121.png"
+    },
+    {
+      "name": "Данил Петров",
+      "position": "Маркетолог / SMM специалист",
+      "company": "Global Solutions Development",
+      "isFavourite": "false",
+      "avatar": "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000"
+    },
+    {
+      "name": "Александр Соломонов",
+      "position": "Frontend разработчик",
+      "company": "Promo Republic",
+      "isFavourite": "false",
+      "avatar": "https://e7.pngegg.com/pngimages/799/987/png-clipart-computer-icons-avatar-icon-design-avatar-heroes-computer-wallpaper-thumbnail.png"
+    },
+    {
+      "name": "Александр Соломонов",
+      "position": "Офис менеджер",
+      "company": "Global Solutions",
+      "isFavourite": "false",
+      "avatar": "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000"
+    },
+    {
+      "name": "Александр Соломонов",
+      "position": "Frontend разработчик",
+      "company": "IT Formula",
+      "isFavourite": "false",
+      "avatar": "https://cdn-icons-png.flaticon.com/512/6596/6596121.png"
+    },
+    {
+      "name": "Александр Соломонов",
+      "position": "Офис менеджер",
+      "company": "Global Solutions Development",
+      "isFavourite": "false",
+      "avatar": "https://e7.pngegg.com/pngimages/799/987/png-clipart-computer-icons-avatar-icon-design-avatar-heroes-computer-wallpaper-thumbnail.png"
+    },
+    {
+      "name": "Александр Соломонов",
+      "position": "Frontend разработчик",
+      "company": "Promo Republic",
+      "isFavourite": "false",
+      "avatar": "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000"
+    },
+    {
+      "name": "Александр Соломонов",
+      "position": "Начальник IT отдела",
+      "company": "IT Formula",
+      "isFavourite": "false",
+      "avatar": "https://cdn-icons-png.flaticon.com/512/6596/6596121.png"
+    },
+    {
+      "name": "Александр Соломонов",
+      "position": "Frontend разработчик",
+      "company": "Global Solutions Development",
+      "isFavourite": "false",
+      "avatar": "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000"
+    },
+    {
+      "name": "Александр Соломонов",
+      "position": "Маркетолог / SMM специалист",
+      "company": "Global Solutions",
+      "isFavourite": "false",
+      "avatar": "https://cdn-icons-png.flaticon.com/512/6596/6596121.png"
+    },
+    {
+      "name": "Александр Соломонов",
+      "position": "Охранник",
+      "company": "IT Formula",
+      "isFavourite": "false",
+      "avatar": "https://cdn-icons-png.flaticon.com/512/6596/6596121.png"
+    },
+    {
+      "name": "Александр Соломонов",
+      "position": "Офис менеджер",
+      "company": "Promo Republic",
+      "isFavourite": "false",
+      "avatar": "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000"
+    },
+    {
+      "name": "Александр Соломонов",
+      "position": "Frontend разработчик",
+      "company": "Promo Republic",
+      "isFavourite": "false",
+      "avatar": "https://e7.pngegg.com/pngimages/799/987/png-clipart-computer-icons-avatar-icon-design-avatar-heroes-computer-wallpaper-thumbnail.png"
+    },
+    {
+      "name": "Александр Соломонов",
+      "position": "Охранник",
+      "company": "Global Solutions Development",
+      "isFavourite": "false",
+      "avatar": "https://cdn-icons-png.flaticon.com/512/6596/6596121.png"
+    },
+    {
+      "name": "Александр Соломонов",
+      "position": "Офис менеджер",
+      "company": "IT Formula",
+      "isFavourite": "false",
+      "avatar": "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000"
+    },
+    {
+      "name": "Александр Соломонов",
+      "position": "Маркетолог / SMM специалист",
+      "company": "Global Solutions",
+      "isFavourite": "false",
+      "avatar": "https://cdn-icons-png.flaticon.com/512/6596/6596121.png"
+    },
+    {
+      "name": "Александр Соломонов",
+      "position": "Начальник IT отдела",
+      "company": "Promo Republic",
+      "isFavourite": "false",
+      "avatar": "https://e7.pngegg.com/pngimages/799/987/png-clipart-computer-icons-avatar-icon-design-avatar-heroes-computer-wallpaper-thumbnail.png"
+    },
+    {
+      "name": "Александр Соломонов",
+      "position": "Начальник IT отдела",
+      "company": "IT Formula",
+      "isFavourite": "false",
+      "avatar": "https://cdn-icons-png.flaticon.com/512/6596/6596121.png"
+    },
+    {
+      "name": "Александр Соломонов",
+      "position": "Охранник",
+      "company": "Global Solutions Development",
+      "isFavourite": "false",
+      "avatar": "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000"
+    }
+  ]
 }

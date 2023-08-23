@@ -7,9 +7,10 @@ import { IconContext } from "react-icons/lib/esm/iconContext";
 import useAppDispatch from "../../../hooks/useAppDispatch";
 import { setSidebarOpen } from "../../../store/reducers/home";
 import clsx from "clsx";
+import { ISidebar } from "./ISidebar";
 
 
-const OpenSidebar = () => {
+const OpenSidebar:React.FC<ISidebar> = ({userAvatar}) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -36,7 +37,9 @@ const OpenSidebar = () => {
           <IconContext.Provider value={{ className: 'icons', size: '32' }} >
             <li>
               <NavLink to={''} className={clsx(styles.menu__link, styles.openSidebarLink)}>
-                <span className={styles.menu__linkCircle}></span>
+                <div className={styles.userAvatar}>
+                  <img src={userAvatar} alt="avatar" />
+                </div>
                 <div className={styles.menu__linkLabel}>Поиск</div>
               </NavLink>
             </li>

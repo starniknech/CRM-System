@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import styles from "./Home.module.scss";
 import Sidebar from "./Sidebar/Sidebar";
 import Main from "./Main/Main";
@@ -8,11 +8,23 @@ import OpenSidebar from "./Sidebar/OpenSidebar";
 
 const Home = () => {
   const { isSidebarOpen } = useAppSelector(state => state.home);
+  const [userAvatar, setUserAvatar] = useState<string>();
 
+
+
+  const user = window.localStorage.getItem('user')
+  useMemo(() => {
+    if (user) {
+      const userAvatar = JSON.parse(user).image;
+      setUserAvatar(userAvatar);
+      console.log(userAvatar);
+    }
+  }, [user])
+  
   return (
     <div className={styles.wrapper}>
-      <Sidebar />
-      {isSidebarOpen && <OpenSidebar />}
+      <Sidebar userAvatar={userAvatar} />
+      {isSidebarOpen && <OpenSidebar userAvatar={userAvatar} />}
       <div className={styles.page}>
         <Header />
         <Main />

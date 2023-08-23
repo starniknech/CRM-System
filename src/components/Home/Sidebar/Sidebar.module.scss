@@ -96,3 +96,12 @@
     background-color: #fff;
   }
 }
+.userAvatar{
+  width: 32px;
+  height: 32px;
+  overflow: hidden;
+}
+.userAvatar img{
+  max-width: 100%;
+  border-radius: 50%;
+}
