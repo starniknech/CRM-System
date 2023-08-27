@@ -11,13 +11,11 @@ const Home = () => {
   const [userAvatar, setUserAvatar] = useState<string>();
 
 
-
   const user = window.localStorage.getItem('user')
   useMemo(() => {
     if (user) {
       const userAvatar = JSON.parse(user).image;
       setUserAvatar(userAvatar);
-      console.log(userAvatar);
     }
   }, [user])
   

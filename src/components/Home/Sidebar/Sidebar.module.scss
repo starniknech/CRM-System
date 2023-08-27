@@ -1,7 +1,9 @@
 @import url('https://fonts.cdnfonts.com/css/avenir');
 
 .sidebar {
+  position: fixed;
   font-family: 'Avenir', sans-serif;
+  height: 100%;
   flex: 0 1 104px;
   padding: 40px 32px 48px 40px;
   background-color: #050504;
@@ -75,9 +77,7 @@
 .openSidebar{
   width: 336px;
   height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: fixed;
   box-shadow: #050504 2px 0px 8px;
 }
 .logoutLink {

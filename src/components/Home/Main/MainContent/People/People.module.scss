@@ -40,7 +40,7 @@
         bottom: 0;
         background-color: #050504;
         border-radius: 200px 200px 0px 0px;
-        transition: all 0.4s linear 0s;
+        transition: width 0.4s linear 0s;
       }
       &:hover::after{
         width: 100%;
@@ -50,6 +50,9 @@
       }
     }
     &__quantity {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: #fff;
       background-color: #B4B4B4;
       width: 34px;
@@ -95,5 +98,7 @@
   .people{
     padding-top: 20px;
   }
-  .peopleList{}
+  .peopleList li:not(:last-child){
+    margin-bottom: 10px;
+  }
 }

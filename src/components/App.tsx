@@ -4,7 +4,7 @@ import Login from "./Login/Login";
 import { Route, Routes } from 'react-router-dom';
 import Home from './Home/Home';
 
-const loggedIn = Boolean(window.localStorage.getItem('isLoggedIn'));
+const loggedIn = window.localStorage.getItem('isLoggedIn');
 
 const App = () => {
   return (
