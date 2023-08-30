@@ -5,7 +5,8 @@ import { BiBadgeCheck } from 'react-icons/bi'
 import { BsChatSquareTextFill, BsFillTelephoneFill } from "react-icons/bs"
 import { BiDotsHorizontalRounded } from "react-icons/bi"
 import { IconContext } from 'react-icons';
-import { IPerson } from '../../../../../../models/IPerson';
+import clsx from 'clsx';
+import { IPerson } from '../../../../models/IPerson';
 
 interface PersonProps {
   name: string;
@@ -64,8 +65,8 @@ const Person: React.FC<PersonProps> = ({ name, position, company, isFavourite, a
           </div>
         </div>
         <div className={styles.actions}>
-          <button type='button' className={styles.actions__button}><BsChatSquareTextFill /></button>
-          <button type='button' className={styles.actions__button}><BsFillTelephoneFill /></button>
+          <button type='button' className={clsx(styles.actions__button, styles.actions__disabledButton)}><BsFillTelephoneFill /></button>
+          <button type='button' className={clsx(styles.actions__button, styles.actions__disabledButton)}><BsChatSquareTextFill /></button>
           <button type='button' onClick={() => onHandleDotsClick()} className={styles.actions__button}><BiDotsHorizontalRounded /></button>
           {isOpenMenu && (
             <div className={styles.menu}>

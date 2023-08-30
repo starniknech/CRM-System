@@ -1,3 +1,3 @@
 export interface ISidebar {
-  userAvatar: string | undefined;
+  userAvatar: string;
 }

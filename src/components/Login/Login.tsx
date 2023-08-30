@@ -6,12 +6,13 @@ import { ILogin } from "../../models/ILogin";
 import clsx from "clsx";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import useAppSelector from "../../hooks/useAppSelector";
-import { useNavigate } from "react-router-dom";
+import {  useLocation, useNavigate } from "react-router-dom";
 
 
 const Login: React.FC = () => {
   const { error, isLoading } = useAppSelector(state => state.login);
-
+  const location = useLocation();
+  const fromPage = location.state?.from?.pathname || '/';
 
   const { register,
     handleSubmit,
@@ -28,7 +29,7 @@ const Login: React.FC = () => {
   const onSubmit: SubmitHandler<ILogin> = async (userCredentials) => {
     const result = await dispatch(fetchLoginData(userCredentials))
     if (result.payload && result.payload !== 'Некорректный логин или пароль') {
-      navigate('/home');
+      navigate(fromPage, {replace: true});
     }
   }
   const requiredField = 'Поле обязательно *'

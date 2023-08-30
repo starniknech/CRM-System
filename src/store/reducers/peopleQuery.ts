@@ -38,7 +38,8 @@ export const peopleApi = createApi({
         url: `/people/${person.id}`,
         method: 'PUT',
         body: person
-      })
+      }),
+      invalidatesTags: ['People']
     })
   })
 })

@@ -4,6 +4,9 @@
   background-color: #F9FAFC;
   border-radius: 25px;
   padding: 10px 16px 10px 20px;
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
 
   .icons{
     height: 100%;
@@ -86,7 +89,9 @@
     display: flex;
     align-items: center;
     gap: 24px;
-
+    &__disabledButton {
+      cursor: not-allowed;
+    }
     &__button{
 
 
@@ -100,7 +105,7 @@
   padding-right: 10px;
   &__button {
     line-height: 150%;
-    color: #050504;
+    font-weight: 700;
     &:hover {
       text-decoration: underline;
     }

@@ -1,31 +1,28 @@
 import React, { useState, useMemo } from "react";
 import styles from "./Home.module.scss";
 import Sidebar from "./Sidebar/Sidebar";
-import Main from "./Main/Main";
 import Header from "./Header/Header";
 import useAppSelector from "../../hooks/useAppSelector";
 import OpenSidebar from "./Sidebar/OpenSidebar";
+import Filters from "./Filters/Filters";
+import { Outlet } from "react-router-dom";
 
 const Home = () => {
   const { isSidebarOpen } = useAppSelector(state => state.home);
-  const [userAvatar, setUserAvatar] = useState<string>();
+  const {user} = useAppSelector(state => state.login)
 
-
-  const user = window.localStorage.getItem('user')
-  useMemo(() => {
-    if (user) {
-      const userAvatar = JSON.parse(user).image;
-      setUserAvatar(userAvatar);
-    }
-  }, [user])
-  
   return (
     <div className={styles.wrapper}>
-      <Sidebar userAvatar={userAvatar} />
-      {isSidebarOpen && <OpenSidebar userAvatar={userAvatar} />}
+      <Sidebar userAvatar={user.avatar} />
+      {isSidebarOpen && <OpenSidebar userAvatar={user.avatar} />}
       <div className={styles.page}>
         <Header />
-        <Main />
+        <div className={styles.main}>
+          <Filters />
+          <main className={styles.mainContent}>
+            <Outlet />
+          </main>
+        </div>
       </div>
     </div>
   );

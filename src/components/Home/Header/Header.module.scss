@@ -10,6 +10,7 @@
     font-size: 40px;
     font-weight: 700;
     color: #050504;
+    text-transform: uppercase;
   }
   &__body{}
   &__buttons{
@@ -25,6 +26,12 @@
     transition: background 0.3s ease 0s;
     &:hover{
       background-color: #e0e0e0;
+    }
+    &_disabled {
+      cursor: not-allowed;
+    }
+        &_disabled:hover {
+      background-color: inherit;
     }
   }
 }

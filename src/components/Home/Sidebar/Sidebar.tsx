@@ -1,20 +1,28 @@
 import React, { useMemo, useState } from "react";
 import styles from "./Sidebar.module.scss";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { BsFilePersonFill, BsChatRightFill } from "react-icons/bs";
 import { AiFillAppstore } from "react-icons/ai";
 import { IconContext } from "react-icons/lib/esm/iconContext";
 import useAppDispatch from "../../../hooks/useAppDispatch";
 import { setSidebarOpen } from "../../../store/reducers/home";
 import { ISidebar } from "./ISidebar";
+import clsx from "clsx";
+import { PathEnum, checkUrl } from "../../../commonFunctions/checkUrl";
 
 
 
-const Sidebar: React.FC<ISidebar> = ({userAvatar}) => {
+const Sidebar: React.FC<ISidebar> = ({ userAvatar }) => {
+  const location = useLocation();
+
+
   const dispatch = useAppDispatch();
   const onMouseEnter = () => {
     dispatch(setSidebarOpen(true))
   }
+
+
+
   return (
     <aside className={styles.sidebar} onMouseEnter={() => onMouseEnter()} >
       <NavLink to={'/home'} className={styles.sidebar__logo} >LO
@@ -34,12 +42,12 @@ const Sidebar: React.FC<ISidebar> = ({userAvatar}) => {
               </NavLink>
             </li>
             <li>
-              <NavLink to={''} className={styles.menu__link}>
+              <NavLink to={''} className={clsx(styles.menu__link, styles.openSidebarLink, { [styles.menu__link_active]: checkUrl(location.pathname) === PathEnum.PEOPLE })}>
                 <BsFilePersonFill />
               </NavLink>
             </li>
             <li>
-              <NavLink to={''} className={styles.menu__link}>
+              <NavLink to={''} className={clsx(styles.menu__link, styles.openSidebarLink, { [styles.menu__link_active]: checkUrl(location.pathname) === PathEnum.COMPANIES })}>
                 <span className={styles.menu__linkCircle}></span>
               </NavLink>
             </li>

@@ -1,40 +1,59 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ILogin, IResponseData } from "../../models/ILogin";
+import { IResponseData } from "../../models/ILogin";
 import { fetchLoginData } from "../actionCreators/loginActionCreator";
-import { UnknownAsyncThunkRejectedWithValueAction } from "@reduxjs/toolkit/dist/matchers";
 
-interface LoginState {
-  username: null | string;
-  rememberMe: boolean;
-  isLoading: boolean;
-  error: string;
+interface IUserData {
+  username: string | null;
   firstName: string | null;
   lastName: string | null;
-  image: string | null;
+  avatar: string;
+}
+
+interface LoginState {
+  user: IUserData
+  isLoading: boolean;
+  error: string;
+  isAuthorized: boolean
 }
 
 const initialState: LoginState = {
-  username: null,
-  rememberMe: false,
+  user: {
+    username: null,
+    firstName: null,
+    lastName: null,
+    avatar: '',
+  } as IUserData,
   isLoading: false,
   error: '',
-  firstName: null,
-  lastName: null,
-  image: null,
+  isAuthorized: false
 }
 
 const loginSlice = createSlice({
   name: 'login',
   initialState,
   reducers: {
+    setUser: (state, action: PayloadAction<IResponseData>) => {
+      state.user.username = action.payload.username;
+      state.user.firstName = action.payload.firstName;
+      state.user.lastName = action.payload.lastName;
+      state.user.avatar = action.payload.image;
+    },
+    setSignOut(state) {
+      state.isAuthorized = false;
+      state.user.username = null;
+      state.user.firstName = null;
+      state.user.lastName = null;
+      state.user.avatar = '';
+    }
   },
   extraReducers(builder) {
     builder.addCase(fetchLoginData.fulfilled, (state, action: PayloadAction<IResponseData>) => {
       state.isLoading = false;
-      state.username = action.payload.username;
-      state.firstName = action.payload.firstName;
-      state.lastName = action.payload.lastName;
-      state.image = action.payload.image;
+      state.user.username = action.payload.username;
+      state.user.firstName = action.payload.firstName;
+      state.user.lastName = action.payload.lastName;
+      state.user.avatar = action.payload.image;
+      state.isAuthorized = true;
     })
     builder.addCase(fetchLoginData.pending, (state) => {
       state.isLoading = true;
@@ -46,4 +65,5 @@ const loginSlice = createSlice({
   },
 })
 
+export const { setUser, setSignOut } = loginSlice.actions;
 export default loginSlice.reducer;

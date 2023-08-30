@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 
 
 interface HomeState {
-  isSidebarOpen: boolean,
+  isSidebarOpen: boolean;
 }
 
 const initialState: HomeState = {
@@ -15,12 +15,9 @@ const homeSlice = createSlice({
   reducers: {
     setSidebarOpen(state, action: PayloadAction<boolean>) {
       state.isSidebarOpen = action.payload;
-    }
+    },
   }
 })
 
 export default homeSlice.reducer;
 export const { setSidebarOpen } = homeSlice.actions;
-
-
-// export { setSidebarOpen } = homeSlice.actions

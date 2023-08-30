@@ -64,16 +64,21 @@
     display: flex;
 
     &__buttonList{
-      background-color: #050504;
-      color: #fff;
+      background-color: #fff;
+      color: #1F2D3D;
       padding: 8px 11px 8px 10px;
       border-radius: 5px 0px 0px 5px;
-      border: 1px solid #050504;
+      border: 1px solid #D3DCE6;
       transition: all 0.3s ease 0s;
       &:hover{
-        color: #050504;
-        background-color: #fff;
-        border: 1px solid #D3DCE6;
+        color: #fff;
+        border: 1px solid #050504;
+        background-color: #050504;
+      }
+      &_active{
+        color: #fff;
+        border: 1px solid #050504;
+        background-color: #050504;
       }
     }
     &__buttonGrid {
@@ -83,7 +88,14 @@
       border-radius: 0px 5px 5px 0px;
       transition: all 0.3s ease 0s;
       &:hover {
-          background-color: #e7ebf0;
+          color: #fff;
+          background-color: #050504;
+          border: 1px solid #050504;
+        }
+        &_active {
+          color: #fff;
+          border: 1px solid #050504;
+          background-color: #050504;
         }
     }
   }
@@ -98,7 +110,22 @@
   .people{
     padding-top: 20px;
   }
-  .peopleList li:not(:last-child){
-    margin-bottom: 10px;
+  .peopleGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+    column-gap: 29px;
+    row-gap: 16px;
   }
+}
+.preloader {
+  margin-left: 400px;
+  margin-top: 200px;
+}
+
+.error {
+  margin-left: 400px;
+  margin-top: 200px;
+  color: #000;
+  font-size: 50px;
+  font-weight: 700;
 }

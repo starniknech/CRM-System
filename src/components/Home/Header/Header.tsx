@@ -1,17 +1,25 @@
+import clsx from "clsx";
 import styles from "./Header.module.scss";
 import { BiSolidInfoCircle } from "react-icons/bi";
 import { IoSettingsSharp } from "react-icons/io5";
 import { IconContext } from "react-icons/lib/esm/iconContext";
+import { checkUrl, PathEnum } from "../../../commonFunctions/checkUrl";
+import { useLocation } from "react-router-dom";
 
 const Header = () => {
+  const location = useLocation();
+  
   return (
     <header className={styles.header}>
-      <h3 className={styles.header__title}>ЛЮДИ</h3>
+      <h3 className={styles.header__title}>
+        {checkUrl(location.pathname) === PathEnum.PEOPLE && 'ЛЮДИ'}
+        {checkUrl(location.pathname) === PathEnum.COMPANIES && 'КОМПАНИИ'}
+      </h3>
       <div className={styles.header__body}>
         <IconContext.Provider value={{size: '24'}}>
       <div className={styles.header__buttons}>
-        <button className={styles.header__button}><IoSettingsSharp/></button>
-        <button className={styles.header__button}><BiSolidInfoCircle /></button>
+        <button className={clsx(styles.header__button, styles.header__button_disabled)}><IoSettingsSharp/></button>
+            <button className={clsx(styles.header__button, styles.header__button_disabled)}><BiSolidInfoCircle /></button>
           </div>
         </IconContext.Provider>
       </div>
