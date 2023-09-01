@@ -4,12 +4,15 @@ import Sidebar from "./Sidebar/Sidebar";
 import Header from "./Header/Header";
 import useAppSelector from "../../hooks/useAppSelector";
 import OpenSidebar from "./Sidebar/OpenSidebar";
-import Filters from "./Filters/Filters";
-import { Outlet } from "react-router-dom";
+import PeopleFilters from "./Filters/PeopleFilters/PeopleFilters";
+import { Outlet, useLocation } from "react-router-dom";
+import { PathEnum, checkUrl } from "../../commonFunctions/checkUrl";
+import CompaniesFilter from "./Filters/CompaniesFilters/CompaniesFilter";
 
 const Home = () => {
   const { isSidebarOpen } = useAppSelector(state => state.home);
-  const {user} = useAppSelector(state => state.login)
+  const { user } = useAppSelector(state => state.login)
+  const location = useLocation();
 
   return (
     <div className={styles.wrapper}>
@@ -18,7 +21,8 @@ const Home = () => {
       <div className={styles.page}>
         <Header />
         <div className={styles.main}>
-          <Filters />
+          {checkUrl(location.pathname) === PathEnum.PEOPLE && <PeopleFilters />}
+          {checkUrl(location.pathname) === PathEnum.COMPANIES && <CompaniesFilter />}
           <main className={styles.mainContent}>
             <Outlet />
           </main>

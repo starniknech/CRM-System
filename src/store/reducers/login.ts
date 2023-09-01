@@ -32,7 +32,7 @@ const loginSlice = createSlice({
   name: 'login',
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<IResponseData>) => {
+    setUser(state, action: PayloadAction<IResponseData>) {
       state.user.username = action.payload.username;
       state.user.firstName = action.payload.firstName;
       state.user.lastName = action.payload.lastName;

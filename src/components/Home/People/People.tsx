@@ -5,10 +5,11 @@ import PeopleTabsButton from './PeopleTabsButton';
 import Person from './Person/Person';
 import PersonGrid from './Person/PersonGrid';
 import clsx from 'clsx';
-import { IPerson } from '../../../models/IPerson';
+import { CategoriesEnum, IPerson } from '../../../models/IPerson';
 import { peopleApi } from '../../../store/reducers/peopleQuery';
 import Preloader from '../../common/Preloader/Preloader';
 import { useSearchParams } from 'react-router-dom';
+import useAppSelector from '../../../hooks/useAppSelector';
 
 enum viewEnum {
   LIST = 'list',
@@ -16,12 +17,12 @@ enum viewEnum {
 }
 
 const People: React.FC = () => {
-  debugger
-  const { data, error, isLoading } = peopleApi.useFetchPeopleQuery(100);
+  const { filteredPeople: data } = useAppSelector(state => state.people)
+  const { error, isLoading } = peopleApi.useFetchPeopleQuery(100);
   const [deletePerson, { error: deleteError, isLoading: deleteLoading }] = peopleApi.useDeletePersonMutation(); // 1 elem это функция, которая удаляет человека, а 2 - объект с isLoading, error и тп
   const [addToFavourite, { error: addError, isLoading: addLoading }] = peopleApi.useAddToFavouritePersonMutation();
   const [removeFromFavourite, { error: removeError, isLoading: removeLoading }] = peopleApi.useRemoveFromFavouritePersonMutation();
-  const [activeTabButton, setActiveTabButton] = useState<string>('Штатные');
+  const [activeTabButton, setActiveTabButton] = useState<string>(CategoriesEnum.STAFF);
   const [people, setPeople] = useState<IPerson[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -42,7 +43,7 @@ const People: React.FC = () => {
 
   useEffect(() => {
     if (data) {
-      const favourites = data.filter(person => person.isFavourite === 'true');
+      const favourites = data.filter(person => person.isFavourite === 'true');   // Фильтрация по избранным(избранные сверху)
       const nonFavourites = data.filter(person => person.isFavourite === 'false')
       const workers = [
         ...favourites,
@@ -57,12 +58,12 @@ const People: React.FC = () => {
     quantity: number | undefined;
   }
   const tabs: ITab[] = [
-    { tabname: 'Штатные', quantity: data?.filter(person => person.category === 'Штатные').length },
-    { tabname: 'Сдельные', quantity: data?.filter(person => person.category === 'Сдельные').length },
-    { tabname: 'Кандидаты', quantity: data?.filter(person => person.category === 'Кандидаты').length },
-    { tabname: 'Архив', quantity: data?.filter(person => person.category === 'Архив').length },
-    { tabname: 'Партнеры', quantity: data?.filter(person => person.category === 'Партнеры').length },
-    { tabname: 'Запросы', quantity: data?.filter(person => person.category === 'Запросы').length },
+    { tabname: CategoriesEnum.STAFF, quantity: data.filter(person => person.category === CategoriesEnum.STAFF).length },
+    { tabname: CategoriesEnum.PIECEWORK, quantity: data.filter(person => person.category === CategoriesEnum.PIECEWORK).length },
+    { tabname: CategoriesEnum.CANDIDATES, quantity: data.filter(person => person.category === CategoriesEnum.CANDIDATES).length },    // Фильтрация по категориям(для табов)
+    { tabname: CategoriesEnum.ARCHIVE, quantity: data.filter(person => person.category === CategoriesEnum.ARCHIVE).length },
+    { tabname: CategoriesEnum.PARTNERS, quantity: data.filter(person => person.category === CategoriesEnum.PARTNERS).length },
+    { tabname: CategoriesEnum.REQUESTS, quantity: data.filter(person => person.category === CategoriesEnum.REQUESTS).length },
   ]
 
   const handleRemovePerson = (person: IPerson) => {
@@ -99,6 +100,8 @@ const People: React.FC = () => {
                 </div>
               </div>
               <div className={styles.body}>
+
+
                 <div className={styles.people}>
                   <ul className={clsx(styles.peopleList, { [styles.peopleGrid]: view === 'grid' })}>
                     {people.map((person) => {
@@ -124,6 +127,8 @@ const People: React.FC = () => {
                     }
                   </ul>
                 </div>
+
+
               </div>
             </div>
           }
