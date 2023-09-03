@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './People.module.scss';
+import styles from './Tabs.module.scss';
 import clsx from "clsx";
 
 interface TabsButtonProps {
@@ -9,7 +9,7 @@ interface TabsButtonProps {
   setActiveTabButton: (label: string) => void;
 }
 
-const PeopleTabsButton: React.FC<TabsButtonProps> = ({label, quantity, activeTabButton, setActiveTabButton }) => {
+const TabsButton: React.FC<TabsButtonProps> = ({label, quantity, activeTabButton, setActiveTabButton }) => {
   return (
     <button type='button' onClick={() => setActiveTabButton(label)} className={clsx(styles.tabs__button, {[styles.tabs__button_active] : (activeTabButton === label)})}>
       <div className={styles.tabs__label}>{label}</div>
@@ -17,4 +17,4 @@ const PeopleTabsButton: React.FC<TabsButtonProps> = ({label, quantity, activeTab
     </button>
   )
 }
-export default PeopleTabsButton;
+export default TabsButton;

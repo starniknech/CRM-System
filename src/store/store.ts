@@ -3,12 +3,14 @@ import home from './reducers/home';
 import loginSlice from './reducers/login';
 import { configureStore, combineReducers, getDefaultMiddleware } from "@reduxjs/toolkit";
 import people from './reducers/people';
+import { companyAPI } from './reducers/companyQuery';
 
 const rootReducer = combineReducers({
   login: loginSlice,
   home: home,
-  [peopleApi.reducerPath]: peopleApi.reducer,
   people: people,
+  [peopleApi.reducerPath]: peopleApi.reducer,
+  [companyAPI.reducerPath]: companyAPI.reducer,
 })
 
 export const setupStore = () => {
@@ -16,7 +18,7 @@ export const setupStore = () => {
     reducer: rootReducer,
     devTools: true,
     middleware: (getDefaultMiddleware) => {
-      return getDefaultMiddleware().concat(peopleApi.middleware)
+      return getDefaultMiddleware().concat(peopleApi.middleware, companyAPI.middleware)
     }
   });
 }

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styles from "./People.module.scss";
 import { AiOutlineUnorderedList, AiFillAppstore } from "react-icons/ai";
-import PeopleTabsButton from './PeopleTabsButton';
 import Person from './Person/Person';
 import PersonGrid from './Person/PersonGrid';
 import clsx from 'clsx';
@@ -10,11 +9,8 @@ import { peopleApi } from '../../../store/reducers/peopleQuery';
 import Preloader from '../../common/Preloader/Preloader';
 import { useSearchParams } from 'react-router-dom';
 import useAppSelector from '../../../hooks/useAppSelector';
-
-enum viewEnum {
-  LIST = 'list',
-  GRID = 'grid'
-}
+import Tabs from '../../common/Tabs/Tabs';
+import ChangeView from '../../common/ChangeView/ChangeView';
 
 const People: React.FC = () => {
   const { filteredPeople: data } = useAppSelector(state => state.people)
@@ -27,29 +23,14 @@ const People: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const view = searchParams.get('view');
-  const setViewParams = (view: viewEnum) => {
-    setSearchParams({
-      view: view
-    })
-  }
 
-  useEffect(() => {
-    if (view === 'grid') {
-      setViewParams(viewEnum.GRID);
-    } else {
-      setViewParams(viewEnum.LIST);
-    }
-  }, [])
 
   useEffect(() => {
     if (data) {
       const favourites = data.filter(person => person.isFavourite === 'true');   // Фильтрация по избранным(избранные сверху)
       const nonFavourites = data.filter(person => person.isFavourite === 'false')
-      const workers = [
-        ...favourites,
-        ...nonFavourites,
-      ]
-      setPeople(workers.filter(person => person.category === activeTabButton));
+      const workers = favourites.concat(nonFavourites);
+      setPeople(workers.filter(person => person.category === activeTabButton)); 
     }
   }, [data, activeTabButton])
 
@@ -84,20 +65,10 @@ const People: React.FC = () => {
         <section className={styles.peopleSection}>
           {isLoading || deleteLoading || removeLoading || addLoading ?
             <div className={styles.preloader} ><Preloader /></div>
-            :
-            <div>
+            :<div>
               <div className={styles.header}>
-                <div className={styles.tabs}>
-                  {tabs.map((tab) => <PeopleTabsButton activeTabButton={activeTabButton}
-                    setActiveTabButton={(label) => setActiveTabButton(label)}
-                    key={tab.tabname} label={tab.tabname} quantity={tab.quantity} />)}
-                </div>
-                <div className={styles.changeView}>
-                  <button className={clsx(styles.changeView__buttonList, { [styles.changeView__buttonList_active]: view === 'list' })}
-                    onClick={() => setViewParams(viewEnum.LIST)} ><AiOutlineUnorderedList /></button>
-                  <button className={clsx(styles.changeView__buttonGrid, { [styles.changeView__buttonGrid_active]: view === 'grid' })}
-                    onClick={() => setViewParams(viewEnum.GRID)}><AiFillAppstore /></button>
-                </div>
+                <Tabs activeTabButton={activeTabButton} setActiveTabButton={setActiveTabButton} tabs={tabs} />
+                <ChangeView />
               </div>
               <div className={styles.body}>
 

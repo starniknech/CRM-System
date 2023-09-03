@@ -1,0 +1,16 @@
+.filters {
+  flex: 0 1 24%;
+  background-color: #fff;
+  padding: 24px;
+  position: relative;
+  z-index: 2;
+  &::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    top: 0;
+    right: 0;
+    background-color: #E5E9F2;
+  }
+}

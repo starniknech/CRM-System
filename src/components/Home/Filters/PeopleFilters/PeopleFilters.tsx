@@ -122,7 +122,6 @@ const PeopleFilters: React.FC = () => {
   const [chosenPositions, setChosenPositions] = useState<string[]>([])
   const dispatch = useAppDispatch();
 
-  // useEffect(() => {
   if (data) {
     if (searchValue) {
       const filteredData = data.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase())) //search
@@ -176,7 +175,6 @@ const PeopleFilters: React.FC = () => {
 
     } else dispatch(setFiltredPeople(data));
   }
-  // }, [searchValue, data])
 
 
   const spoilers = [
