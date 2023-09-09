@@ -4,11 +4,13 @@ import loginSlice from './reducers/login';
 import { configureStore, combineReducers, getDefaultMiddleware } from "@reduxjs/toolkit";
 import people from './reducers/people';
 import { companyAPI } from './reducers/companyQuery';
+import companyFilters from './reducers/companyFilters';
 
 const rootReducer = combineReducers({
   login: loginSlice,
   home: home,
   people: people,
+  companiesFilter: companyFilters,
   [peopleApi.reducerPath]: peopleApi.reducer,
   [companyAPI.reducerPath]: companyAPI.reducer,
 })

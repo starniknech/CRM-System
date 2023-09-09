@@ -17,3 +17,11 @@
     }
   }
 }
+.preloader, .error {
+  padding: 200px 0px 0px 200px;
+}
+.error {
+  font-weight: 700;
+  line-height: 150%;
+  font-size: 30px;
+}

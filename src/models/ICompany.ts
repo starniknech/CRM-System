@@ -1,6 +1,17 @@
+export enum CountriesEnum {
+  UZBEKISTAN = 'Узбекистан',
+  GERMANY = 'Германия',
+  SPAIN = 'Испания',
+}
 
-
-
+export enum RegionsEnum {
+  TASHKENT = 'Узбекистан',
+  BERLIN = 'Берлин',
+  MADRID = 'Мадрид',
+  SAMARKAND = 'Самарканд',
+  MUNICH = 'Мюнхен',
+  BARCELONA = 'Барселона',
+}
 
 export enum CategoriesEnum {
   MY_KOMPANIES = 'Мои компании',
@@ -15,8 +26,8 @@ export interface ICompany {
   id: number;
   name: string;
   legalName: string;
-  country: string;
-  region: string;
+  country: CountriesEnum;
+  region: RegionsEnum;
   worktimeStarts: number;
   worktimeEnds: number;
   direction: string;

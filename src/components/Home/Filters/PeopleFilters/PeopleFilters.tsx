@@ -11,11 +11,13 @@ import { CompaniesEnum, IPerson, PositionsEnum } from "../../../../models/IPerso
 import useAppSelector from "../../../../hooks/useAppSelector";
 /* ======================ITEMS============================================================================================ */
 interface ItemCompanyProps {
+  isLoading: boolean;
   name: string;
   setChosenCompany: (company: string) => void;
   chosenCompany: string;
 }
 interface ItemPositionsProps {
+  isLoading: boolean;
   name: string;
   setChosenPositions: (cb: SetStateAction<string[]>) => void;
   chosenPositions: string[];
@@ -41,26 +43,47 @@ interface SpoilerItemProps {
 /* ============================================================================================================================= */
 const CompanyItem: React.FC<ItemCompanyProps> = ({ name, setChosenCompany, chosenCompany }) => {
   const { filteredPeople } = useAppSelector(state => state.people);
+  const [number, setNumber] = useState<number>(0);
+
 
   const handleSetCompany = (name: string) => {
     if (chosenCompany === name) {
       setChosenCompany('');
     } else setChosenCompany(name);
   }
-
   const count = filteredPeople.filter(el => el.company === name).length
+
+  useEffect(() => {
+    if (chosenCompany) {
+      setNumber(number);
+    } else {
+      setNumber(count);
+    }
+  }, [count])
 
 
   return (
     <li className={clsx(styles.companies__item, { [styles.companies__item_active]: chosenCompany === name })} >
       <div onClick={() => handleSetCompany(name)} className={styles.companies__avatar}></div>
       <div className={styles.companies__name} ><span onClick={() => handleSetCompany(name)}>{name}</span></div>
-      <div className={styles.companies__quantity}>{count}</div>
+      <div className={styles.companies__quantity}>{number}</div>
     </li>
   );
 }
 const PositionItem: React.FC<ItemPositionsProps> = ({ name, chosenPositions, setChosenPositions }) => {
   const { filteredPeople } = useAppSelector(state => state.people);
+  const [number, setNumber] = useState<number>(0);
+
+  const count = filteredPeople.filter(el => el.position === name).length;
+
+  useEffect(() => {
+    if (chosenPositions.length) {
+      setNumber(number);
+    } else {
+      setNumber(count);
+    }
+  }, [count])
+
 
   const handleAddPosition = (name: string) => {
     if (chosenPositions.includes(name)) {
@@ -68,15 +91,13 @@ const PositionItem: React.FC<ItemPositionsProps> = ({ name, chosenPositions, set
     } else setChosenPositions(actual => [...actual, name])
   }
 
-  const count = filteredPeople.filter(el => el.position === name).length;
-
   return (
     <li className={clsx(styles.positions__item, { [styles.positions__item_active]: chosenPositions.includes(name) })}>
       <div className={styles.positions__checkbox}
         onClick={() => handleAddPosition(name)}
       ></div>
       <div className={styles.positions__name}><span onClick={() => handleAddPosition(name)}>{name}</span></div>
-      <div className={styles.positions__quantity}>{count}</div>
+      <div className={styles.positions__quantity}>{number}</div>
     </li>
   );
 }
@@ -84,6 +105,8 @@ const PositionItem: React.FC<ItemPositionsProps> = ({ name, chosenPositions, set
 const SpoilerItem: React.FC<SpoilerItemProps> = ({ chosenCompany, chosenPositions, spoiler, index, isOpenSpoiler, handleOpenSpoiler, setChosenCompany, setChosenPositions }) => {
   const [listHeight, setListHeight] = useState<number>();
   const listRef = useRef<HTMLUListElement>(null);
+  const { isLoading } = peopleApi.useFetchPeopleQuery(100);
+
 
   useEffect(() => {
     if (listRef.current) {
@@ -103,10 +126,10 @@ const SpoilerItem: React.FC<SpoilerItemProps> = ({ chosenCompany, chosenPosition
         style={isOpenSpoiler ? { height: listHeight } : { height: "0px" }}>
         <ul className={styles.spoiler__list} ref={listRef} >
           {spoiler.category === 'companies' &&
-            spoiler.list.map(el => <CompanyItem chosenCompany={chosenCompany} setChosenCompany={setChosenCompany} key={el.name} name={el.name} />)
+            spoiler.list.map(el => <CompanyItem isLoading={isLoading} chosenCompany={chosenCompany} setChosenCompany={setChosenCompany} key={el.name} name={el.name} />)
           }
           {spoiler.category === 'positions' &&
-            spoiler.list.map(el => <PositionItem chosenPositions={chosenPositions} setChosenPositions={setChosenPositions} key={el.name} name={el.name} />)
+            spoiler.list.map(el => <PositionItem isLoading={isLoading} chosenPositions={chosenPositions} setChosenPositions={setChosenPositions} key={el.name} name={el.name} />)
           }
         </ul>
       </div>

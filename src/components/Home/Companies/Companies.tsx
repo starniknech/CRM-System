@@ -8,6 +8,10 @@ import { useSearchParams } from 'react-router-dom';
 import Company from './Company/Company';
 import CompanyGrid from './Company/CompanyGrid/CompanyGrid';
 import clsx from 'clsx';
+import useAppSelector from '../../../hooks/useAppSelector';
+import Preloader from '../../common/Preloader/Preloader';
+import { setFinalData } from '../../../store/reducers/companyFilters';
+import useAppDispatch from '../../../hooks/useAppDispatch';
 
 
 const Companies = () => {
@@ -16,54 +20,123 @@ const Companies = () => {
   const [addToFavourite, { error: addError, isLoading: isAddLoading }] = companyAPI.useAddToFavouritesCompaniesMutation();
   const [removeFromFavourite, { error: removeError, isLoading: isRemoveLoading }] = companyAPI.useRemoveFromFavouritesCompaniesMutation();
   const [activeTabButton, setActiveTabButton] = useState<string>('Все');
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
+  const { searchValue, chosenCountries, chosenRegions, timeStartsAt, timeEndsAt } = useAppSelector(state => state.companiesFilter);
   const [companies, setCompanies] = useState<ICompany[]>([]);
+  const [filteredCompanies, setFilteredCompanies] = useState<ICompany[]>([]);
+  const dispatch = useAppDispatch();
 
   const view = searchParams.get('view');
 
   useEffect(() => {
     if (data) {
-      const favouriteCompanies = data.filter(el => el.isFavourite);
-      const nonFavouriteCompanies = data.filter(el => !el.isFavourite);
-      const allCompanies = favouriteCompanies.concat(nonFavouriteCompanies);
-      console.log(allCompanies);
-      activeTabButton === 'Все' ? setCompanies(allCompanies) : setCompanies(allCompanies.filter(person => person.category === activeTabButton));
+
+      const filteredCompaniesByWorkTime = data.filter(el => (el.worktimeStarts === timeStartsAt) && (el.worktimeEnds === timeEndsAt));
+
+      if (searchValue) {
+        const filteredData = filteredCompaniesByWorkTime.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()))
+        if (chosenCountries.length) {
+          const filteredData2 = filteredData.filter(el => chosenCountries.includes(el.country));
+          if (chosenRegions.length) {
+            const filteredData3 = filteredData2.filter(el => chosenRegions.includes(el.region));
+            setFilteredCompanies(filteredData3);
+          } else setFilteredCompanies(filteredData2);
+        } else if (chosenRegions.length) {
+          const filteredData2 = filteredData.filter(el => chosenRegions.includes(el.region));
+          if (chosenCountries.length) {
+            const filteredData3 = filteredData2.filter(el => chosenCountries.includes(el.country));
+            setFilteredCompanies(filteredData3);
+          } else setFilteredCompanies(filteredData2)
+        } else setFilteredCompanies(filteredData);
+
+      } else if (chosenCountries.length) {
+        const filteredData = filteredCompaniesByWorkTime.filter(el => chosenCountries.includes(el.country));
+        if (chosenRegions.length) {
+          const filteredData2 = filteredData.filter(el => chosenRegions.includes(el.region));
+          if (searchValue) {
+            const filteredData3 = filteredData2.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()));
+            setFilteredCompanies(filteredData3);
+          } else setFilteredCompanies(filteredData2);
+        } else if (searchValue) {
+          const filteredData2 = filteredData.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()));
+          if (chosenRegions.length) {
+            const filteredData3 = filteredData2.filter(el => chosenRegions.includes(el.region));
+            setFilteredCompanies(filteredData3);
+          } else setFilteredCompanies(filteredData2);
+        } else setFilteredCompanies(filteredData);
+
+      } else if (chosenRegions.length) {
+        const filteredData = filteredCompaniesByWorkTime.filter(el => chosenRegions.includes(el.region));
+        if (chosenCountries.length) {
+          const filteredData2 = filteredData.filter(el => chosenCountries.includes(el.country));
+          if (searchValue) {
+            const filteredData3 = filteredData2.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()));
+            setFilteredCompanies(filteredData3);
+          } else setFilteredCompanies(filteredData2);
+        } else if (searchValue) {
+          const filteredData2 = filteredData.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()));
+          if (chosenCountries.length) {
+            const filteredData3 = filteredData2.filter(el => chosenCountries.includes(el.country));
+            setFilteredCompanies(filteredData3);
+          } else setFilteredCompanies(filteredData2);
+        } else setFilteredCompanies(filteredData)
+      } else setFilteredCompanies(filteredCompaniesByWorkTime);
     }
-  }, [data, activeTabButton])
+  }, [timeStartsAt, timeEndsAt, searchValue, chosenCountries, chosenRegions, data]);
+
+  useEffect(() => {
+    dispatch(setFinalData(filteredCompanies));
+    const favouriteCompanies = filteredCompanies.filter(el => el.isFavourite);
+    const nonFavouriteCompanies = filteredCompanies.filter(el => !el.isFavourite);
+    const allCompanies = favouriteCompanies.concat(nonFavouriteCompanies);
+    activeTabButton === 'Все' ? setCompanies(allCompanies) : setCompanies(allCompanies.filter(person => person.category === activeTabButton));
+  }, [filteredCompanies, activeTabButton, timeStartsAt, timeEndsAt]);
 
   const tabs = [
-    { tabname: 'Все', quantity: data?.length },
-    { tabname: CategoriesEnum.MY_KOMPANIES, quantity: data?.filter(el => el.category === CategoriesEnum.MY_KOMPANIES).length },
-    { tabname: CategoriesEnum.PARTNERS, quantity: data?.filter(el => el.category === CategoriesEnum.PARTNERS).length },
-    { tabname: CategoriesEnum.CLIENTS, quantity: data?.filter(el => el.category === CategoriesEnum.CLIENTS).length },
-    { tabname: CategoriesEnum.CUSTOMERS, quantity: data?.filter(el => el.category === CategoriesEnum.CUSTOMERS).length },
-    { tabname: CategoriesEnum.BLACK_LIST, quantity: data?.filter(el => el.category === CategoriesEnum.BLACK_LIST).length },
-    { tabname: CategoriesEnum.CLOSED, quantity: data?.filter(el => el.category === CategoriesEnum.CLOSED).length },
+    { tabname: 'Все', quantity: filteredCompanies.length },
+    { tabname: CategoriesEnum.MY_KOMPANIES, quantity: filteredCompanies.filter(el => el.category === CategoriesEnum.MY_KOMPANIES).length },
+    { tabname: CategoriesEnum.PARTNERS, quantity: filteredCompanies.filter(el => el.category === CategoriesEnum.PARTNERS).length },
+    { tabname: CategoriesEnum.CLIENTS, quantity: filteredCompanies.filter(el => el.category === CategoriesEnum.CLIENTS).length },
+    { tabname: CategoriesEnum.CUSTOMERS, quantity: filteredCompanies.filter(el => el.category === CategoriesEnum.CUSTOMERS).length },
+    { tabname: CategoriesEnum.BLACK_LIST, quantity: filteredCompanies.filter(el => el.category === CategoriesEnum.BLACK_LIST).length },
+    { tabname: CategoriesEnum.CLOSED, quantity: filteredCompanies.filter(el => el.category === CategoriesEnum.CLOSED).length },
   ];
 
-
+  // console.log(filteredCompanies);
 
   return (
-    <section className={styles.companies}>
-      <div className={styles.companies__header}>
-        <Tabs tabs={tabs} activeTabButton={activeTabButton} setActiveTabButton={setActiveTabButton} />
-        <ChangeView />
-      </div>
-      <div className={styles.companies__body}>
-        <ul className={clsx(styles.companies__list, { [styles.companies__list_grid]: view === 'grid'})}>
-          {view === 'list' ?
-            companies.map(el => 
-              <Company key={el.id} name={el.name} legalName={el.legalName} country={el.country} deleteCompany={deleteCompany} addToFavourite={addToFavourite}
-                region={el.region} direction={el.direction} isFavourite={el.isFavourite} removeFromFavourite={removeFromFavourite} company={el}/>
-              )
-            : companies.map(el => 
-              <CompanyGrid key={el.id} name={el.name} country={el.country} deleteCompany={deleteCompany} addToFavourite={addToFavourite}
-                region={el.region} direction={el.direction} isFavourite={el.isFavourite} removeFromFavourite={removeFromFavourite} object={el} />
-              )
+    <>
+      {isLoading || isAddLoading || isDeleteLoading || isRemoveLoading ?
+        <div className={styles.preloader}>
+          <Preloader />
+        </div>
+        : <>
+          {(error || addError || deleteError || removeError) ?
+            <h2 className={styles.error}>Произошла ошибка при загрузке компаний...</h2>
+            : <section className={styles.companies}>
+              <div className={styles.companies__header}>
+                <Tabs tabs={tabs} activeTabButton={activeTabButton} setActiveTabButton={setActiveTabButton} />
+                <ChangeView />
+              </div>
+              <div className={styles.companies__body}>
+                <ul className={clsx(styles.companies__list, { [styles.companies__list_grid]: view === 'grid' })}>
+                  {view === 'list' ?
+                    companies.map(el =>
+                      <Company key={el.id} name={el.name} legalName={el.legalName} country={el.country} deleteCompany={deleteCompany} addToFavourite={addToFavourite}
+                        region={el.region} direction={el.direction} isFavourite={el.isFavourite} removeFromFavourite={removeFromFavourite} company={el} />
+                    )
+                    : companies.map(el =>
+                      <CompanyGrid key={el.id} name={el.name} country={el.country} deleteCompany={deleteCompany} addToFavourite={addToFavourite}
+                        region={el.region} direction={el.direction} isFavourite={el.isFavourite} removeFromFavourite={removeFromFavourite} object={el} />
+                    )
+                  }
+                </ul>
+              </div>
+            </section>
           }
-        </ul>
-      </div>
-    </section>
+        </>
+      }
+    </>
   )
 
 }

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import styles from "./People.module.scss";
-import { AiOutlineUnorderedList, AiFillAppstore } from "react-icons/ai";
 import Person from './Person/Person';
 import PersonGrid from './Person/PersonGrid';
 import clsx from 'clsx';
