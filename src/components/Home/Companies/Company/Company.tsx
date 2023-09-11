@@ -6,9 +6,11 @@ import { FaMapLocationDot } from "react-icons/fa6"
 import { IconContext } from 'react-icons';
 import { ICompany } from '../../../../models/ICompany';
 import clsx from 'clsx';
+import { Link, useLocation } from 'react-router-dom';
 
 
 interface CompanyProps {
+  id: number;
   name: string;
   legalName: string;
   country: string;
@@ -17,19 +19,16 @@ interface CompanyProps {
   isFavourite: boolean;
   company: ICompany
   deleteCompany: (company: ICompany) => void;
-  addToFavourite: (company: ICompany) => void;
-  removeFromFavourite: (company: ICompany) => void;
+  toggleFavourite: (company: ICompany) => void;
 }
 
-const Company: React.FC<CompanyProps> = ({ name, legalName, country, region, direction, isFavourite, company, deleteCompany, addToFavourite, removeFromFavourite }) => {
+const Company: React.FC<CompanyProps> = ({ id, name, legalName, country, region, direction, isFavourite, company, deleteCompany, toggleFavourite }) => {
   const [isOpenMenu, setOpenMenu] = useState<boolean>(false);
+  const location = useLocation();
 
   const changeFavourite = () => {
-    isFavourite ? removeFromFavourite({...company, isFavourite: false}) : addToFavourite({...company, isFavourite: true});
+    isFavourite ? toggleFavourite({ ...company, isFavourite: false }) : toggleFavourite({ ...company, isFavourite: true });
   }
-
-
-
   return (
     <li className={styles.item}>
       <IconContext.Provider value={{ size: '24px' }}>
@@ -37,12 +36,11 @@ const Company: React.FC<CompanyProps> = ({ name, legalName, country, region, dir
           {isFavourite ? <AiFillStar /> : <AiOutlineStar />}
         </button>
         <div className={styles.item__info}>
-          <div className={styles.item__avatar}></div>
+          <Link to={`/companies/${id}`} className={styles.item__avatar}></Link>
           <div className={styles.item__title}>
-            <h3 className={styles.item__name}>{name}</h3>
+            <Link to={`/companies/${id}`} className={styles.item__name}>{name}</Link>
             <div className={styles.item__legalName}>{legalName}</div>
           </div>
-
         </div>
         <div className={styles.item__location}>
           <div className={styles.item__country}>{country}</div>

@@ -1,0 +1,33 @@
+.peopleSection {
+  padding: 24px 40px;
+  flex: 1 1 auto;
+}
+.peopleSection .header {
+  height: 90px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.peopleSection .people {
+  padding-top: 20px;
+}
+.peopleSection .peopleGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  -moz-column-gap: 29px;
+       column-gap: 29px;
+  row-gap: 16px;
+}
+
+.preloader {
+  margin-left: 400px;
+  margin-top: 200px;
+}
+
+.error {
+  margin-left: 400px;
+  margin-top: 200px;
+  color: #000;
+  font-size: 50px;
+  font-weight: 700;
+}

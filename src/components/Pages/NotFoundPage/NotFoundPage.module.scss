@@ -1,0 +1,36 @@
+
+.notFound {
+  background-color: #EFF2F7;
+  padding: 150px 200px;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+
+  &__text {
+    text-align: center;
+  }
+  &__number {
+    font-size: 400px;
+    font-weight: 700;
+    letter-spacing: 10px;
+  }
+  &__error{
+    color: #050504;
+    font-size: 50px;
+    margin-bottom: 40px;
+  }
+  &__param {
+    padding-left: 10px;
+    font-size: 50px;
+    color: gray;
+  }
+  &__link {
+    text-decoration: underline;
+    color:#3C4858;
+    font-size: 30px;
+    font-weight: 700;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}

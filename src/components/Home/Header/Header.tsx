@@ -1,3 +1,4 @@
+import React from 'react';
 import clsx from "clsx";
 import styles from "./Header.module.scss";
 import { BiSolidInfoCircle } from "react-icons/bi";
@@ -6,7 +7,7 @@ import { IconContext } from "react-icons/lib/esm/iconContext";
 import { checkUrl, PathEnum } from "../../../commonFunctions/checkUrl";
 import { useLocation } from "react-router-dom";
 
-const Header = () => {
+const Header: React.FC = () => {
   const location = useLocation();
   
   return (

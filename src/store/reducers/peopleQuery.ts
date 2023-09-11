@@ -11,7 +11,7 @@ export const peopleApi = createApi({
     fetchPeople: build.query<IPerson[], number>({
       query: (limit: number = 30) => ({
         url: '/people',
-        params: { // параметры запроса(в URL)
+        params: {
           _limit: limit,
         }
       }),
@@ -25,7 +25,7 @@ export const peopleApi = createApi({
       }),
       invalidatesTags: ['People']
     }),
-    addToFavouritePerson: build.mutation<IPerson, IPerson>({
+    toggleFavouritePerson: build.mutation<IPerson, IPerson>({
       query: (person) => ({
         url: `/people/${person.id}`,
         method: 'PUT',
@@ -33,13 +33,11 @@ export const peopleApi = createApi({
       }),
       invalidatesTags: ['People']
     }),
-    removeFromFavouritePerson: build.mutation<IPerson, IPerson>({
-      query: (person) => ({
-        url: `/people/${person.id}`,
-        method: 'PUT',
-        body: person
+    getPersonById: build.query<IPerson, string | undefined>({
+      query: (id) => ({
+        url: `/people/${id}`,
       }),
-      invalidatesTags: ['People']
+      providesTags: result => ['People'],
     })
   })
 })

@@ -7,19 +7,20 @@ import { BiDotsHorizontalRounded } from "react-icons/bi"
 import { IconContext } from 'react-icons';
 import clsx from 'clsx';
 import { IPerson } from '../../../../models/IPerson';
+import { Link } from 'react-router-dom';
 
 interface PersonProps {
   name: string;
   position: string;
   company: string;
-  isFavourite: string;
+  isFavourite: boolean;
   avatar: string;
   person: IPerson;
   handleRemovePerson: (person: IPerson) => void;
-  addToFavouritePerson: (person: IPerson) => void;
-  removeFromFavouritePerson: (person: IPerson) => void;
+  toggleFavouritePerson: (person: IPerson) => void;
+  id: number;
 }
-const Person: React.FC<PersonProps> = ({ name, position, company, isFavourite, avatar, handleRemovePerson, person, addToFavouritePerson, removeFromFavouritePerson }) => {
+const Person: React.FC<PersonProps> = ({ id, name, position, company, isFavourite, avatar, handleRemovePerson, person, toggleFavouritePerson }) => {
   const [isOpenMenu, setOpenMenu] = useState<boolean>(false);
 
   const onHandleDotsClick = () => {
@@ -30,26 +31,22 @@ const Person: React.FC<PersonProps> = ({ name, position, company, isFavourite, a
   }
 
   const handlerFavouritePerson = () => {
-    if (isFavourite === 'true') {
-      removeFromFavouritePerson({ ...person, isFavourite: 'false' });
-    } else
-      addToFavouritePerson({ ...person, isFavourite: 'true' });
+    isFavourite ? toggleFavouritePerson({ ...person, isFavourite: false }) : toggleFavouritePerson({ ...person, isFavourite: true });
   }
 
   return (
     <IconContext.Provider value={{ size: '24px' }}>
       <li className={styles.pearson}>
         <div className={styles.icons}>
-          {/* <div className={styles.icons__tick}></div> */}
           <div onClick={() => handlerFavouritePerson()}
-            className={styles.icons__favourite}>{(isFavourite === 'true') ? <AiFillStar /> : <AiOutlineStar />}</div>
+            className={styles.icons__favourite}>{(isFavourite) ? <AiFillStar /> : <AiOutlineStar />}</div>
         </div>
         <div className={styles.pearson__data}>
           <div className={styles.pearson__ava}>
-            <img src={avatar} alt="" />
+            <Link to={`/people/${id}`}><img src={avatar} alt="" /></Link>
           </div>
           <div className={styles.pearson__info}>
-            <div className={styles.pearson__name}>{name}</div>
+            <div className={styles.pearson__name}><Link to={`/people/${id}`} >{name}</Link></div>
             <div className={styles.pearson__position}>
               <BiBadgeCheck />
               <div className={styles.pearson__positionLabel}>{position}</div>
@@ -57,9 +54,7 @@ const Person: React.FC<PersonProps> = ({ name, position, company, isFavourite, a
           </div>
         </div>
         <div className={styles.company}>
-          <div className={styles.company__ava}>
-
-          </div>
+          <div className={styles.company__ava}></div>
           <div className={styles.company__info}>
             <div className={styles.company__name}>{company}</div>
           </div>

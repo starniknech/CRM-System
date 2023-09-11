@@ -1,27 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./Sidebar.module.scss";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { BsFilePersonFill, BsChatRightFill } from "react-icons/bs";
 import { AiFillAppstore } from "react-icons/ai";
 import { IconContext } from "react-icons/lib/esm/iconContext";
 import useAppDispatch from "../../../hooks/useAppDispatch";
-import { setSidebarOpen } from "../../../store/reducers/home";
 import clsx from "clsx";
 import { ISidebar } from "./ISidebar";
-import useAppSelector from "../../../hooks/useAppSelector";
 import { setSignOut } from "../../../store/reducers/login";
 import { PathEnum, checkUrl } from "../../../commonFunctions/checkUrl";
 
 
-const OpenSidebar: React.FC<ISidebar> = ({ userAvatar }) => {
+const OpenSidebar: React.FC<ISidebar> = ({ userAvatar, setSidebarOpen }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
 
-  const onMouseOut = () => {
-    dispatch(setSidebarOpen(false));
-  }
   const logout = () => {
     window.localStorage.removeItem('user');
     window.localStorage.removeItem('isLoggedIn');
@@ -31,7 +26,7 @@ const OpenSidebar: React.FC<ISidebar> = ({ userAvatar }) => {
 
   return (
 
-    <aside className={clsx(styles.sidebar, styles.openSidebar)} onMouseLeave={() => onMouseOut()} >
+    <aside className={clsx(styles.sidebar, styles.openSidebar)} onMouseLeave={() => setSidebarOpen(false)} >
       <div className={styles.sidebar__companyLogo} >
         <Link to={'/home'} className={styles.sidebar__logo} >LO
           <br />
@@ -96,7 +91,7 @@ const OpenSidebar: React.FC<ISidebar> = ({ userAvatar }) => {
           </IconContext.Provider>
         </ul>
       </nav>
-      <button onClick={() => logout()} type="button" className={clsx(styles.logoutLink, styles.openSidebarLink)} >
+      <button onClick={logout} type="button" className={clsx(styles.logoutLink, styles.openSidebarLink)} >
         <span className={styles.menu__linkCircle}></span>
         <div className={styles.menu__linkLabel}>Выйти</div>
       </button>

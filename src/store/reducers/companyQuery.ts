@@ -24,7 +24,7 @@ export const companyAPI = createApi({
       }),
       invalidatesTags: ['Companies']
     }),
-    addToFavouritesCompanies: build.mutation<ICompany, ICompany>({
+    toggleFavouriteCompanies: build.mutation<ICompany, ICompany>({
       query: (company) => ({
         url: `/companies/${company.id}`,
         method: 'PUT',
@@ -32,13 +32,11 @@ export const companyAPI = createApi({
       }),
       invalidatesTags: ['Companies']
     }),
-    removeFromFavouritesCompanies: build.mutation<ICompany, ICompany>({
-      query: (company) => ({
-        url: `/companies/${company.id}`,
-        method: 'PUT',
-        body: company
+    getCompanyById: build.query<ICompany, string | undefined>({
+      query: (id) => ({
+        url: `/companies/${id}`,
       }),
-      invalidatesTags: ['Companies']
-    }),
+      providesTags: result => ['Companies'],
+    })
   })
 })

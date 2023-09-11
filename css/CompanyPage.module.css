@@ -1,0 +1,47 @@
+.page {
+  background-color: #EFF2F7;
+  padding: 0px 40px 40px 40px;
+  flex: 1 1 auto;
+}
+.page__header {
+  padding: 28px 0px;
+  display: flex;
+  justify-content: space-between;
+}
+.page__search {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #F9FAFC;
+  border: 1px solid #D3DCE6;
+  border-radius: 50%;
+  cursor: not-allowed;
+}
+.page__body {
+  background-color: #fff;
+  border-radius: 16px 16px 16px 16px;
+}
+
+.navigation__list {
+  display: flex;
+  gap: 16px;
+}
+.navigation__item {
+  color: #8492A6;
+  font-size: 17px;
+  line-height: 142%;
+  text-transform: uppercase;
+  display: flex;
+  gap: 16px;
+  cursor: pointer;
+}
+.navigation__item:hover {
+  text-decoration: underline;
+}
+.navigation__item_company {
+  color: #050504;
+  font-weight: 700;
+  letter-spacing: 1px;
+}

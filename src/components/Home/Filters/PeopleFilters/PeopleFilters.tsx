@@ -7,20 +7,14 @@ import clsx from "clsx";
 import { peopleApi } from "../../../../store/reducers/peopleQuery";
 import useAppDispatch from "../../../../hooks/useAppDispatch";
 import { setFiltredPeople } from "../../../../store/reducers/people";
-import { CompaniesEnum, IPerson, PositionsEnum } from "../../../../models/IPerson";
+import { CompaniesEnum, PositionsEnum } from "../../../../models/IPerson";
 import useAppSelector from "../../../../hooks/useAppSelector";
+import CheckItem from "../commonFilters/CheckItem/CheckItem";
 /* ======================ITEMS============================================================================================ */
 interface ItemCompanyProps {
-  isLoading: boolean;
   name: string;
   setChosenCompany: (company: string) => void;
   chosenCompany: string;
-}
-interface ItemPositionsProps {
-  isLoading: boolean;
-  name: string;
-  setChosenPositions: (cb: SetStateAction<string[]>) => void;
-  chosenPositions: string[];
 }
 interface IItem {
   name: PositionsEnum | CompaniesEnum;
@@ -70,43 +64,21 @@ const CompanyItem: React.FC<ItemCompanyProps> = ({ name, setChosenCompany, chose
     </li>
   );
 }
-const PositionItem: React.FC<ItemPositionsProps> = ({ name, chosenPositions, setChosenPositions }) => {
-  const { filteredPeople } = useAppSelector(state => state.people);
-  const [number, setNumber] = useState<number>(0);
-
-  const count = filteredPeople.filter(el => el.position === name).length;
-
-  useEffect(() => {
-    if (chosenPositions.length) {
-      setNumber(number);
-    } else {
-      setNumber(count);
-    }
-  }, [count])
-
-
-  const handleAddPosition = (name: string) => {
-    if (chosenPositions.includes(name)) {
-      setChosenPositions(actual => actual.filter(el => el !== name));
-    } else setChosenPositions(actual => [...actual, name])
-  }
-
-  return (
-    <li className={clsx(styles.positions__item, { [styles.positions__item_active]: chosenPositions.includes(name) })}>
-      <div className={styles.positions__checkbox}
-        onClick={() => handleAddPosition(name)}
-      ></div>
-      <div className={styles.positions__name}><span onClick={() => handleAddPosition(name)}>{name}</span></div>
-      <div className={styles.positions__quantity}>{number}</div>
-    </li>
-  );
-}
 
 const SpoilerItem: React.FC<SpoilerItemProps> = ({ chosenCompany, chosenPositions, spoiler, index, isOpenSpoiler, handleOpenSpoiler, setChosenCompany, setChosenPositions }) => {
   const [listHeight, setListHeight] = useState<number>();
   const listRef = useRef<HTMLUListElement>(null);
-  const { isLoading } = peopleApi.useFetchPeopleQuery(100);
+  const { filteredPeople } = useAppSelector(state => state.people);
 
+  const setPositionsCount = (name: string): number => {
+    return filteredPeople.filter(el => el.position === name).length;
+  }
+
+  const handleAddPosition = (name: string) => {
+    if (chosenPositions.includes(name)) {
+      setChosenPositions(actual => actual.filter(el => el !== name));
+    } else setChosenPositions(actual => [...actual, name]);
+  }
 
   useEffect(() => {
     if (listRef.current) {
@@ -126,10 +98,10 @@ const SpoilerItem: React.FC<SpoilerItemProps> = ({ chosenCompany, chosenPosition
         style={isOpenSpoiler ? { height: listHeight } : { height: "0px" }}>
         <ul className={styles.spoiler__list} ref={listRef} >
           {spoiler.category === 'companies' &&
-            spoiler.list.map(el => <CompanyItem isLoading={isLoading} chosenCompany={chosenCompany} setChosenCompany={setChosenCompany} key={el.name} name={el.name} />)
+            spoiler.list.map(el => <CompanyItem chosenCompany={chosenCompany} setChosenCompany={setChosenCompany} key={el.name} name={el.name} />)
           }
           {spoiler.category === 'positions' &&
-            spoiler.list.map(el => <PositionItem isLoading={isLoading} chosenPositions={chosenPositions} setChosenPositions={setChosenPositions} key={el.name} name={el.name} />)
+            spoiler.list.map(el => <CheckItem handleAddItem={handleAddPosition} setCount={setPositionsCount} chosenItems={chosenPositions} key={el.name} name={el.name} />)
           }
         </ul>
       </div>
@@ -145,59 +117,62 @@ const PeopleFilters: React.FC = () => {
   const [chosenPositions, setChosenPositions] = useState<string[]>([])
   const dispatch = useAppDispatch();
 
-  if (data) {
-    if (searchValue) {
-      const filteredData = data.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase())) //search
-      if (chosenCompany) {
-        const filteredData2 = filteredData.filter(el => el.company === chosenCompany)
+  useEffect(() => {
+    if (data) {
+      if (searchValue) {
+        const filteredData = data.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase())) //search
+        if (chosenCompany) {
+          const filteredData2 = filteredData.filter(el => el.company === chosenCompany)
+          if (chosenPositions.length) {
+            const filteredData3 = filteredData2.filter(item => chosenPositions.includes(item.position))
+            dispatch(setFiltredPeople(filteredData3));
+          } else dispatch(setFiltredPeople(filteredData2));
+        } else if (chosenPositions.length) {
+          const filteredData2 = filteredData.filter(item => chosenPositions.includes(item.position))
+          if (chosenCompany) {
+            const filteredData3 = filteredData2.filter(el => el.company === chosenCompany);
+            dispatch(setFiltredPeople(filteredData3));
+          } else dispatch(setFiltredPeople(filteredData2));
+        } else {
+          dispatch(setFiltredPeople(filteredData))
+        }
+
+      } else if (chosenCompany) {
+        const filteredData = data.filter(el => el.company === chosenCompany);
         if (chosenPositions.length) {
-          const filteredData3 = filteredData2.filter(item => chosenPositions.includes(item.position))
-          dispatch(setFiltredPeople(filteredData3));
-        } else dispatch(setFiltredPeople(filteredData2));
+          const filteredData2 = filteredData.filter(item => chosenPositions.includes(item.position))
+          if (searchValue) {
+            const filteredData3 = filteredData2.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()))
+            dispatch(setFiltredPeople(filteredData3))
+          } else dispatch(setFiltredPeople(filteredData2))
+        } else if (searchValue) {
+          const filteredData2 = filteredData.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()));
+          if (chosenPositions.length) {
+            const filteredData3 = filteredData2.filter(item => chosenPositions.includes(item.position));
+            dispatch(setFiltredPeople(filteredData3));
+          } else dispatch(setFiltredPeople(filteredData2));
+        } else dispatch(setFiltredPeople(filteredData));
+
       } else if (chosenPositions.length) {
-        const filteredData2 = filteredData.filter(item => chosenPositions.includes(item.position))
+        const filteredData = data.filter(item => chosenPositions.includes(item.position));
         if (chosenCompany) {
-          const filteredData3 = filteredData2.filter(el => el.company === chosenCompany);
-          dispatch(setFiltredPeople(filteredData3));
-        } else dispatch(setFiltredPeople(filteredData2));
-      } else {
-        dispatch(setFiltredPeople(filteredData))
-      }
+          const filteredData2 = filteredData.filter(el => el.company === chosenCompany);
+          if (searchValue) {
+            const filteredData3 = filteredData2.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()));
+            dispatch(setFiltredPeople(filteredData3));
+          } else dispatch(setFiltredPeople(filteredData2));
+        } else if (searchValue) {
+          const filteredData2 = filteredData.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()));
+          if (chosenCompany) {
+            const filteredData3 = filteredData2.filter(el => el.company === chosenCompany);
+            dispatch(setFiltredPeople(filteredData3));
+          } else dispatch(setFiltredPeople(filteredData2));
+        } else dispatch(setFiltredPeople(filteredData));
 
-    } else if (chosenCompany) {
-      const filteredData = data.filter(el => el.company === chosenCompany);
-      if (chosenPositions.length) {
-        const filteredData2 = filteredData.filter(item => chosenPositions.includes(item.position))
-        if (searchValue) {
-          const filteredData3 = filteredData2.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()))
-          dispatch(setFiltredPeople(filteredData3))
-        } else dispatch(setFiltredPeople(filteredData2))
-      } else if (searchValue) {
-        const filteredData2 = filteredData.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()));
-        if (chosenPositions.length) {
-          const filteredData3 = filteredData2.filter(item => chosenPositions.includes(item.position));
-          dispatch(setFiltredPeople(filteredData3));
-        } else dispatch(setFiltredPeople(filteredData2));
-      } else dispatch(setFiltredPeople(filteredData));
+      } else dispatch(setFiltredPeople(data));
+    }
+  }, [data, searchValue, chosenPositions, chosenCompany])
 
-    } else if (chosenPositions.length) {
-      const filteredData = data.filter(item => chosenPositions.includes(item.position));
-      if (chosenCompany) {
-        const filteredData2 = filteredData.filter(el => el.company === chosenCompany);
-        if (searchValue) {
-          const filteredData3 = filteredData2.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()));
-          dispatch(setFiltredPeople(filteredData3));
-        } else dispatch(setFiltredPeople(filteredData2));
-      } else if (searchValue) {
-        const filteredData2 = filteredData.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()));
-        if (chosenCompany) {
-          const filteredData3 = filteredData2.filter(el => el.company === chosenCompany);
-          dispatch(setFiltredPeople(filteredData3));
-        } else dispatch(setFiltredPeople(filteredData2));
-      } else dispatch(setFiltredPeople(filteredData));
-
-    } else dispatch(setFiltredPeople(data));
-  }
 
 
   const spoilers = [

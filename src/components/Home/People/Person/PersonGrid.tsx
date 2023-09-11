@@ -7,19 +7,20 @@ import { BiDotsHorizontalRounded } from "react-icons/bi"
 import { IconContext } from 'react-icons';
 import clsx from 'clsx';
 import { IPerson } from '../../../../models/IPerson';
+import { Link } from 'react-router-dom';
 
 interface PersonProps {
+  id: number;
   name: string;
   position: string;
   company: string;
-  isFavourite: string;
+  isFavourite: boolean;
   avatar: string;
   person: IPerson;
   handleRemovePerson: (person: IPerson) => void;
-  addToFavouritePerson: (person: IPerson) => void;
-  removeFromFavouritePerson: (person: IPerson) => void;
+  toggleFavouritePerson: (person: IPerson) => void;
 }
-const PersonGrid: React.FC<PersonProps> = ({ name, position, company, isFavourite, avatar, handleRemovePerson, person, addToFavouritePerson, removeFromFavouritePerson }) => {
+const PersonGrid: React.FC<PersonProps> = ({ id, name, position, company, isFavourite, avatar, handleRemovePerson, person, toggleFavouritePerson }) => {
   const [isOpenMenu, setOpenMenu] = useState<boolean>(false);
 
   const onHandleDotsClick = () => {
@@ -30,23 +31,22 @@ const PersonGrid: React.FC<PersonProps> = ({ name, position, company, isFavourit
   }
 
   const handlerFavouritePerson = () => {
-    if (isFavourite === 'true') {
-      removeFromFavouritePerson({ ...person, isFavourite: 'false' });
-    } else
-      addToFavouritePerson({ ...person, isFavourite: 'true' });
+    isFavourite ? toggleFavouritePerson({ ...person, isFavourite: false }) : toggleFavouritePerson({ ...person, isFavourite: true });
   }
 
   return (
     <IconContext.Provider value={{ size: '24px' }}>
       <li className={styles.person}>
         <div onClick={handlerFavouritePerson}
-          className={styles.person__favourite}>{isFavourite === 'true' ? <AiFillStar /> : <AiOutlineStar />}</div>
+          className={styles.person__favourite}>{isFavourite ? <AiFillStar /> : <AiOutlineStar />}</div>
         <div className={styles.person__info}>
           <div className={styles.person__avatar}>
-            <img src={avatar} alt="person avatar" />
+            <Link to={`/people/${id}`} >
+              <img src={avatar} alt="person avatar" />
+            </Link>
           </div>
-          <div className={styles.person__name}>{name}</div>
-          <div className={styles.person__tagName}>@alex_solo</div>
+          <div className={styles.person__name}><Link to={`/people/${id}`}>{name}</Link></div>
+          <div className={styles.person__tagName}><Link to={`/people/${id}`}>@some_nikname</Link></div>
           <div className={styles.person__position}>
             <BiBadgeCheck />
             <div className={styles.person__positionLabel}>{position}</div>
@@ -55,14 +55,14 @@ const PersonGrid: React.FC<PersonProps> = ({ name, position, company, isFavourit
         </div>
         <div className={styles.person__actions}>
           <IconContext.Provider value={{ size: '16px' }}>
-          <button className={clsx(styles.person__button, styles.person__button_disabled)}>
-            <BsChatRightText />
-            <span className={styles.person__buttonLabel} >Написать</span>
-          </button>
             <button className={clsx(styles.person__button, styles.person__button_disabled)}>
-            <BsFillTelephoneFill />
-            <span className={styles.person__buttonLabel} >Позвонить</span>
-          </button>
+              <BsChatRightText />
+              <span className={styles.person__buttonLabel} >Написать</span>
+            </button>
+            <button className={clsx(styles.person__button, styles.person__button_disabled)}>
+              <BsFillTelephoneFill />
+              <span className={styles.person__buttonLabel} >Позвонить</span>
+            </button>
             <button onClick={onHandleDotsClick} className={clsx(styles.person__button, styles.person__button_dotted)} >
               <BiDotsHorizontalRounded />
             </button>

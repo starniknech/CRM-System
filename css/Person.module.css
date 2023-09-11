@@ -1,0 +1,95 @@
+.pearson {
+  display: flex;
+  gap: 32px;
+  background-color: #F9FAFC;
+  border-radius: 25px;
+  padding: 10px 16px 10px 20px;
+}
+.pearson:not(:last-child) {
+  margin-bottom: 10px;
+}
+.pearson .icons {
+  height: 100%;
+  display: flex;
+  -moz-column-gap: 24px;
+       column-gap: 24px;
+  align-items: center;
+  height: 60px;
+}
+.pearson .icons__tick {
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1px solid #D3DCE6;
+}
+.pearson .icons__favourite {
+  cursor: pointer;
+}
+.pearson__data {
+  flex: 0 1 30%;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.pearson__ava {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.pearson__ava img {
+  max-width: 100%;
+}
+.pearson__name {
+  font-size: 16px;
+  line-height: 150%;
+  font-weight: 800;
+  color: #3C4858;
+}
+.pearson__position {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.pearson__positionLabel {
+  color: #8492A6;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 134%;
+}
+.pearson .company {
+  flex: 1 1 auto;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.pearson .company__ava {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #8492A6;
+}
+.pearson .company__name {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 150%;
+}
+.pearson .actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.pearson .actions__disabledButton {
+  cursor: not-allowed;
+}
+.menu {
+  padding-right: 10px;
+}
+.menu__button {
+  line-height: 150%;
+  font-weight: 700;
+}
+.menu__button:hover {
+  text-decoration: underline;
+}

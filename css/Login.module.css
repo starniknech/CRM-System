@@ -1,0 +1,138 @@
+.section {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.section .body {
+  width: 360px;
+  padding: 10px;
+}
+.section .body > div {
+  text-align: center;
+}
+.section .body .logo {
+  color: #050504;
+  font-size: 40px;
+  font-weight: 700;
+  margin-bottom: 32px;
+  display: inline-block;
+}
+.section .body .title {
+  text-align: center;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 800;
+  font-family: Arial, Helvetica, sans-serif;
+  margin-bottom: 32px;
+}
+.section .body .form__label {
+  font-size: 17px;
+  font-weight: 400;
+  color: #8492A6;
+  margin-bottom: 5px;
+}
+.section .body .form__container {
+  position: relative;
+  padding-bottom: 15px;
+}
+.section .body .form__loginInput {
+  width: 100%;
+  height: 48px;
+  border: 1px solid #D3DCE6;
+  border-radius: 5px;
+  margin-bottom: 25px;
+  padding: 12px 0 12px 16px;
+  font-size: 14px;
+}
+.section .body .form__loginInput::-moz-placeholder {
+  color: #D3DCE6;
+}
+.section .body .form__loginInput::placeholder {
+  color: #D3DCE6;
+}
+.section .body .form__errorMessage {
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 1.2;
+  position: absolute;
+  right: 0;
+  color: #8e0909;
+}
+.section .body .form .loginMessage {
+  bottom: 10px;
+}
+.section .body .form .passwordMessage {
+  bottom: -5px;
+}
+.section .body .form__passwordInput {
+  width: 100%;
+  height: 48px;
+  border: 1px solid #D3DCE6;
+  border-radius: 5px;
+  margin-bottom: 7px;
+  padding: 12px 0 12px 16px;
+  font-size: 14px;
+  text-transform: capitalize;
+}
+.section .body .form__passwordInput::-moz-placeholder {
+  color: #D3DCE6;
+}
+.section .body .form__passwordInput::placeholder {
+  color: #D3DCE6;
+}
+.section .body .form__inputError {
+  border: 1px solid #050504;
+  box-shadow: 0px 4px 10px #ff8282;
+}
+.section .body .form__rememberMe {
+  height: 20px;
+  display: flex;
+  gap: 8px;
+  margin-bottom: 60px;
+  align-items: center;
+}
+.section .body .form__rememberMeLabel {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 200%;
+  color: #3C4858;
+}
+.section .body .form__enterButton {
+  width: 100%;
+  padding-top: 16px;
+  padding-bottom: 8px;
+  background-color: #050504;
+  color: #fff;
+  font-size: 20px;
+  border-radius: 5px;
+  margin-bottom: 16px;
+  transition: all 0.3s ease 0s;
+}
+.section .body .form__enterButton:hover {
+  box-shadow: 0px 4px 10px #babab4;
+}
+.section .body .form__forgotPasswordButton {
+  width: 100%;
+  padding-top: 16px;
+  padding-bottom: 8px;
+  background-color: inherit;
+  font-size: 20px;
+  border-radius: 5px;
+  transition: all 0.3s ease 0s;
+  border: 1px solid #050504;
+  margin-bottom: 15px;
+}
+.section .body .form__forgotPasswordButton:hover {
+  box-shadow: 0px 4px 10px #babab4;
+}
+.section .body .form__error {
+  text-align: center;
+  padding: 15px;
+  width: 100%;
+  border: 1px solid #8e0909;
+  border-radius: 15px;
+  background-color: hsl(0, 100%, 88%);
+  color: #8e0909;
+}

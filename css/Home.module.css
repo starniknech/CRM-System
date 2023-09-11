@@ -1,0 +1,17 @@
+.wrapper {
+  min-height: 100vh;
+  overflow: clip;
+  display: flex;
+}
+
+.page {
+  margin-left: 104px;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  display: flex;
+  flex: 1 1 auto;
+}

@@ -1,36 +1,35 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import styles from './ChangeView.module.scss';
 import clsx from 'clsx';
 import { ViewEnum } from './ViewEnum';
 import { AiFillAppstore, AiOutlineUnorderedList } from 'react-icons/ai';
-import { useSearchParams } from 'react-router-dom';
+import useAppDispatch from '../../../hooks/useAppDispatch';
+import { setCompaniesView, setPeopleView } from '../../../store/reducers/home';
 
+interface ChangeViewProps {
+  view: string;
+  page: string
+}
 
+const ChangeView: React.FC<ChangeViewProps> = ({  view, page }) => {
+  const dispatch = useAppDispatch();
 
-const ChangeView: React.FC = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const view = searchParams.get('view');
-  const setViewParams = (view: ViewEnum) => {
-    setSearchParams({
-      view: view
-    })
-  }
-
-  useEffect(() => {
-    if (view === 'grid') {
-      setViewParams(ViewEnum.GRID);
-    } else {
-      setViewParams(ViewEnum.LIST);
+  const handleClick = (view: ViewEnum) => {
+    if (page === 'people') {
+      window.localStorage.setItem('peopleView', view);
+      dispatch(setPeopleView(view));
+    } else if (page === 'companies') {
+      window.localStorage.setItem('companiesView', view);
+      dispatch(setCompaniesView(view));
     }
-  }, [])
+  }
 
   return (
     <div className={styles.changeView}>
-      <button className={clsx(styles.changeView__buttonList, { [styles.changeView__buttonList_active]: view === 'list' })}
-        onClick={() => setViewParams(ViewEnum.LIST)} ><AiOutlineUnorderedList /></button>
-      <button className={clsx(styles.changeView__buttonGrid, { [styles.changeView__buttonGrid_active]: view === 'grid' })}
-        onClick={() => setViewParams(ViewEnum.GRID)}><AiFillAppstore /></button>
+      <button className={clsx(styles.changeView__buttonList, { [styles.changeView__buttonList_active]: view === ViewEnum.LIST })}
+        onClick={() => handleClick(ViewEnum.LIST)} ><AiOutlineUnorderedList /></button>
+      <button className={clsx(styles.changeView__buttonGrid, { [styles.changeView__buttonGrid_active]: view === ViewEnum.GRID })}
+        onClick={() => handleClick(ViewEnum.GRID)}><AiFillAppstore /></button>
     </div>
   )
 

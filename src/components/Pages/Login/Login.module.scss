@@ -36,7 +36,7 @@
       }
       &__container {
         position: relative;
-        padding-bottom: 15px;
+        padding-bottom: 30px;
       }
       &__loginInput{
         width: 100%;
@@ -60,10 +60,10 @@
         color: #8e0909;
       }
       .loginMessage {
-        bottom: 10px;
+        bottom: 15px;
       }
       .passwordMessage {
-        bottom: -5px;
+        bottom: 3px;
       }
       &__passwordInput {
         width: 100%;

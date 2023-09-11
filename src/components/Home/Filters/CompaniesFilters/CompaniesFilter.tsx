@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import useAppSelector from '../../../../hooks/useAppSelector';
 import useAppDispatch from '../../../../hooks/useAppDispatch';
 import { deleteChosenCountries, deleteChosenRegions, setChosenCountries, setChosenRegions, setSearchValue, setTimeEndsAt, setTimeStartsAt } from '../../../../store/reducers/companyFilters';
-import { set } from 'react-hook-form';
+import CheckItem from '../commonFilters/CheckItem/CheckItem';
 /* ============================================================================================================================= */
 interface SpoilerItemProps {
   name: string;
@@ -15,46 +15,8 @@ interface SpoilerItemProps {
   handleOpenSpoiler: (index: number) => void;
   index: number;
 }
-interface CountriesItemProps {
-  name: string
-}
-interface RegionsItemProps {
-  name: string
-}
 /* ============================================================================================================================= */
-const CountriesItem: React.FC<CountriesItemProps> = ({ name }) => {
-  const { chosenCountries, finalData } = useAppSelector(state => state.companiesFilter);
-  const [number, setNumber] = useState<number>(0);
-  const dispatch = useAppDispatch();
-
-  const handleClick = () => {
-    chosenCountries.includes(name) ?
-      dispatch(deleteChosenCountries(chosenCountries.filter(el => el !== name)))
-      : dispatch(setChosenCountries(name))
-  }
-
-  const count = finalData.filter(el => el.country === name).length;
-  console.log(count);
-  useEffect(() => {
-    if (chosenCountries.length) {
-      setNumber(number);
-    } else {
-      setNumber(count);
-    }
-  }, [count])
-
-  return (
-    <li className={clsx(styles.item, { [styles.item_active]: chosenCountries.includes(name) })}>
-      <div className={styles.item__checkbox}
-        onClick={handleClick}
-      ></div>
-      <div className={styles.item__name}><span onClick={handleClick}>{name}</span></div>
-      <div className={styles.item__quantity}>{number}</div>
-    </li>
-  );
-}
-/* ============================================================================================================================= */
-const WorkTimeItem = () => {
+const WorkTimeItem:React.FC = () => {
   const { timeStartsAt, timeEndsAt } = useAppSelector(state => state.companiesFilter);
   const dispatch = useAppDispatch();
   const rangeDistance = 24;
@@ -123,42 +85,11 @@ const WorkTimeItem = () => {
     </div>
   );
 }
-/* ============================================================================================================================= */
-const RegionsItem: React.FC<RegionsItemProps> = ({ name }) => {
-  const { chosenRegions, finalData } = useAppSelector(state => state.companiesFilter);
-  const [number, setNumber] = useState<number>(0);
-  const dispatch = useAppDispatch();
-
-  const handleAddRegions = (name: string) => {
-    chosenRegions.includes(name) ?
-      dispatch(deleteChosenRegions(chosenRegions.filter(el => el !== name)))
-      : dispatch(setChosenRegions(name))
-  }
-
-  const count = finalData.filter(el => el.region === name).length;
-  useEffect(() => {
-    if (chosenRegions.length) {
-      setNumber(number);
-    } else {
-      setNumber(count);
-    }
-  }, [count])
-
-  return (
-    <li className={clsx(styles.item, { [styles.item_active]: chosenRegions.includes(name) })}>
-      <div className={styles.item__checkbox}
-        onClick={() => handleAddRegions(name)}
-      ></div>
-      <div className={styles.item__name}><span onClick={() => handleAddRegions(name)}>{name}</span></div>
-      <div className={styles.item__quantity}>{number}</div>
-    </li>
-  );
-}
-
 /* ======================================SPOILERITEM=========================================================================== */
 const SpoilerItem: React.FC<SpoilerItemProps> = ({ index, name, isOpenSpoiler, handleOpenSpoiler }) => {
-
+  const { chosenRegions, chosenCountries, finalData } = useAppSelector(state => state.companiesFilter);
   const [listHeight, setListHeight] = useState<number>();
+  const dispatch = useAppDispatch();
   const listRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
@@ -166,6 +97,24 @@ const SpoilerItem: React.FC<SpoilerItemProps> = ({ index, name, isOpenSpoiler, h
       setListHeight(listRef.current.getBoundingClientRect().height);
     }
   }, [])
+
+  const handleAddRegion = (name: string) => {
+    chosenRegions.includes(name)
+      ? dispatch(deleteChosenRegions(chosenRegions.filter(el => el !== name)))
+      : dispatch(setChosenRegions(name));
+  }
+  const handleAddCountry = (name: string) => {
+    chosenCountries.includes(name)
+      ? dispatch(deleteChosenCountries(chosenCountries.filter(el => el !== name)))
+      : dispatch(setChosenCountries(name));
+  }
+
+  const setRegiosnCount = (name: string): number => {
+    return finalData.filter(el => el.region === name).length;
+  }
+  const setCountriesCount = (name: string): number => {
+    return finalData.filter(el => el.country === name).length;
+  }
 
   const countries = ['Узбекистан', 'Германия', 'Испания'];
   const regions = ['Ташкент', 'Самарканд', 'Берлин', 'Мюнхен', 'Мадрид', 'Барселона'];
@@ -186,12 +135,12 @@ const SpoilerItem: React.FC<SpoilerItemProps> = ({ index, name, isOpenSpoiler, h
           <ul className={styles.spoiler__list} ref={listRef} >
             {name === 'По странам' &&
               countries.map(el =>
-                <CountriesItem name={el} key={el} />
+                <CheckItem handleAddItem={handleAddCountry} setCount={setCountriesCount} chosenItems={chosenCountries} name={el} key={el} />
               )
             }
             {name === 'По регионам' &&
               regions.map(el =>
-                <RegionsItem name={el} key={el} />
+                <CheckItem setCount={setRegiosnCount} chosenItems={chosenRegions} handleAddItem={handleAddRegion} name={el} key={el} />
               )
             }
           </ul>}
@@ -210,17 +159,7 @@ const CompaniesFilter: React.FC = () => {
     dispatch(setSearchValue(e.target.value));
   }
 
-  const spoilers = [
-    {
-      name: 'По странам',
-    },
-    {
-      name: 'По регионам',
-    },
-    {
-      name: 'Время работы',
-    }
-  ]
+  const spoilers = ['По странам', 'По регионам', 'Время работы'];
 
   const handleOpenSpoiler = (index: number) => {
     if (openSpoilers.includes(index)) {
@@ -251,7 +190,7 @@ const CompaniesFilter: React.FC = () => {
       </div>
       <div className={styles.spoilers}>
         {spoilers.map((el, index) =>
-          <SpoilerItem index={index} name={el.name} isOpenSpoiler={openSpoilers.includes(index)} handleOpenSpoiler={handleOpenSpoiler} key={el.name} />
+          <SpoilerItem index={index} name={el} isOpenSpoiler={openSpoilers.includes(index)} handleOpenSpoiler={handleOpenSpoiler} key={el} />
         )}
       </div>
     </section>

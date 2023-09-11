@@ -27,7 +27,7 @@ export interface IPerson {
   name: string;
   position: string;
   company: string;
-  isFavourite: string;
+  isFavourite: boolean;
   avatar: string;
   category: CategoriesEnum;
 }

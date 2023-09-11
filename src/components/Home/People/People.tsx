@@ -6,30 +6,36 @@ import clsx from 'clsx';
 import { CategoriesEnum, IPerson } from '../../../models/IPerson';
 import { peopleApi } from '../../../store/reducers/peopleQuery';
 import Preloader from '../../common/Preloader/Preloader';
-import { useSearchParams } from 'react-router-dom';
 import useAppSelector from '../../../hooks/useAppSelector';
 import Tabs from '../../common/Tabs/Tabs';
 import ChangeView from '../../common/ChangeView/ChangeView';
+import PeopleFilters from '../Filters/PeopleFilters/PeopleFilters';
+import useAppDispatch from '../../../hooks/useAppDispatch';
+import { setPeopleView } from '../../../store/reducers/home';
 
 const People: React.FC = () => {
   const { filteredPeople: data } = useAppSelector(state => state.people)
   const { error, isLoading } = peopleApi.useFetchPeopleQuery(100);
   const [deletePerson, { error: deleteError, isLoading: deleteLoading }] = peopleApi.useDeletePersonMutation(); // 1 elem это функция, которая удаляет человека, а 2 - объект с isLoading, error и тп
-  const [addToFavourite, { error: addError, isLoading: addLoading }] = peopleApi.useAddToFavouritePersonMutation();
-  const [removeFromFavourite, { error: removeError, isLoading: removeLoading }] = peopleApi.useRemoveFromFavouritePersonMutation();
+  const [removeFromFavourite, { error: toggleError, isLoading: isToggleLoading }] = peopleApi.useToggleFavouritePersonMutation();
   const [activeTabButton, setActiveTabButton] = useState<string>(CategoriesEnum.STAFF);
   const [people, setPeople] = useState<IPerson[]>([]);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { peopleView } = useAppSelector(state => state.home);
+  const dispatch = useAppDispatch();
 
-  const view = searchParams.get('view');
-
+  useEffect(() => {
+    const peopleView = localStorage.getItem('peopleView');
+    if (peopleView) {
+      dispatch(setPeopleView(peopleView))
+    }
+  }, [])
 
   useEffect(() => {
     if (data) {
-      const favourites = data.filter(person => person.isFavourite === 'true');   // Фильтрация по избранным(избранные сверху)
-      const nonFavourites = data.filter(person => person.isFavourite === 'false')
+      const favourites = data.filter(person => person.isFavourite);   // Фильтрация по избранным(избранные сверху)
+      const nonFavourites = data.filter(person => !person.isFavourite)
       const workers = favourites.concat(nonFavourites);
-      setPeople(workers.filter(person => person.category === activeTabButton)); 
+      setPeople(workers.filter(person => person.category === activeTabButton));
     }
   }, [data, activeTabButton])
 
@@ -50,62 +56,56 @@ const People: React.FC = () => {
     deletePerson(person);
   }
 
-  const addToFavouritePerson = (person: IPerson) => {
-    addToFavourite(person);
-  }
 
-  const removeFavouritePerson = (person: IPerson) => {
+  const toggleFavouritePerson = (person: IPerson) => {
     removeFromFavourite(person);
   }
 
   return (
     <>
-      {(error || deleteError || removeError || addError) ? <h2>Произошла ошибка...</h2> :
-        <section className={styles.peopleSection}>
-          {isLoading || deleteLoading || removeLoading || addLoading ?
-            <div className={styles.preloader} ><Preloader /></div>
-            :<div>
-              <div className={styles.header}>
-                <Tabs activeTabButton={activeTabButton} setActiveTabButton={setActiveTabButton} tabs={tabs} />
-                <ChangeView />
-              </div>
-              <div className={styles.body}>
-
-
-                <div className={styles.people}>
-                  <ul className={clsx(styles.peopleList, { [styles.peopleGrid]: view === 'grid' })}>
-                    {people.map((person) => {
-                      if (view === 'list') {
-                        return (
-                          <Person key={person.id} person={person}
-                            name={person.name} company={person.company}
-                            position={person.position} isFavourite={person.isFavourite}
-                            avatar={person.avatar}
-                            handleRemovePerson={handleRemovePerson} addToFavouritePerson={addToFavouritePerson} removeFromFavouritePerson={removeFavouritePerson}
-                          />);
-                      } else if (view === 'grid') {
-                        return (
-                          <PersonGrid key={person.id} person={person}
-                            name={person.name} company={person.company}
-                            position={person.position} isFavourite={person.isFavourite}
-                            avatar={person.avatar}
-                            handleRemovePerson={handleRemovePerson} addToFavouritePerson={addToFavouritePerson} removeFromFavouritePerson={removeFavouritePerson}
-                          />
-                        );
-                      }
-                    })
-                    }
-                  </ul>
+      {(error || deleteError || toggleError) ? <h2>Произошла ошибка...</h2> :
+        <>
+          <PeopleFilters />
+          <section className={styles.peopleSection}>
+            {isLoading || deleteLoading || isToggleLoading ?
+              <div className={styles.preloader} ><Preloader /></div>
+              : <div>
+                <div className={styles.header}>
+                  <Tabs activeTabButton={activeTabButton} setActiveTabButton={setActiveTabButton} tabs={tabs} />
+                  <ChangeView view={peopleView} page='people'/>
                 </div>
-
-
+                <div className={styles.body}>
+                  <div className={styles.people}>
+                    <ul className={clsx(styles.peopleList, { [styles.peopleGrid]: peopleView === 'grid' })}>
+                      {people.map((person) => {
+                        if (peopleView === 'list') {
+                          return (
+                            <Person key={person.id} id={person.id} person={person}
+                              name={person.name} company={person.company}
+                              position={person.position} isFavourite={person.isFavourite}
+                              avatar={person.avatar}
+                              handleRemovePerson={handleRemovePerson} toggleFavouritePerson={toggleFavouritePerson}
+                            />);
+                        } else if (peopleView === 'grid') {
+                          return (
+                            <PersonGrid key={person.id} id={person.id} person={person}
+                              name={person.name} company={person.company}
+                              position={person.position} isFavourite={person.isFavourite}
+                              avatar={person.avatar}
+                              handleRemovePerson={handleRemovePerson} toggleFavouritePerson={toggleFavouritePerson}
+                            />
+                          );
+                        }
+                      })
+                      }
+                    </ul>
+                  </div>
+                </div>
               </div>
-            </div>
-          }
-
-        </section>
+            }
+          </section>
+        </>
       }
-
     </>
 
   )

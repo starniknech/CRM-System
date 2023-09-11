@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from './Login.module.scss'
 import { SubmitHandler, useForm } from "react-hook-form";
-import { fetchLoginData } from "../../store/actionCreators/loginActionCreator";
-import { ILogin } from "../../models/ILogin";
 import clsx from "clsx";
-import useAppDispatch from "../../hooks/useAppDispatch";
-import useAppSelector from "../../hooks/useAppSelector";
 import {  useLocation, useNavigate } from "react-router-dom";
+import useAppSelector from "../../../hooks/useAppSelector";
+import { ILogin } from "../../../models/ILogin";
+import useAppDispatch from "../../../hooks/useAppDispatch";
+import { fetchLoginData } from "../../../store/actionCreators/loginActionCreator";
 
 
 const Login: React.FC = () => {
@@ -60,10 +60,6 @@ const Login: React.FC = () => {
             )}
           </div>
 
-          <div className={styles.form__rememberMe}>
-            <input type="checkbox" className={styles.form__checkbox} id="checkbox" />
-            <label className={styles.form__rememberMeLabel} htmlFor="checkbox">Запомнить меня</label>
-          </div>
           <div className={styles.form__buttons}>
             <button className={styles.form__enterButton}>{isLoading ? 'Загрузка...' : 'Войти'}</button>
             <button className={styles.form__forgotPasswordButton} type="button" onClick={() => setValue('password', '0lelplR')} >Волшебная кнопка</button>

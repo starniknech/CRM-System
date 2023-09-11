@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './Companies.module.scss';
 import { companyAPI } from '../../../store/reducers/companyQuery';
 import { CategoriesEnum, ICompany } from '../../../models/ICompany';
 import Tabs from '../../common/Tabs/Tabs';
 import ChangeView from '../../common/ChangeView/ChangeView';
-import { useSearchParams } from 'react-router-dom';
 import Company from './Company/Company';
 import CompanyGrid from './Company/CompanyGrid/CompanyGrid';
 import clsx from 'clsx';
@@ -12,21 +11,28 @@ import useAppSelector from '../../../hooks/useAppSelector';
 import Preloader from '../../common/Preloader/Preloader';
 import { setFinalData } from '../../../store/reducers/companyFilters';
 import useAppDispatch from '../../../hooks/useAppDispatch';
+import CompaniesFilter from '../Filters/CompaniesFilters/CompaniesFilter';
+import { ViewEnum } from '../../common/ChangeView/ViewEnum';
+import { setCompaniesView } from '../../../store/reducers/home';
 
 
-const Companies = () => {
+const Companies:React.FC = () => {
   const { data, isLoading, error } = companyAPI.useFetchCompaniesQuery(100);
   const [deleteCompany, { error: deleteError, isLoading: isDeleteLoading }] = companyAPI.useDeleteCompanyMutation();
-  const [addToFavourite, { error: addError, isLoading: isAddLoading }] = companyAPI.useAddToFavouritesCompaniesMutation();
-  const [removeFromFavourite, { error: removeError, isLoading: isRemoveLoading }] = companyAPI.useRemoveFromFavouritesCompaniesMutation();
+  const [toggleFavourite, { error: toggleError, isLoading: isToggleLoading }] = companyAPI.useToggleFavouriteCompaniesMutation();
   const [activeTabButton, setActiveTabButton] = useState<string>('Все');
-  const [searchParams] = useSearchParams();
   const { searchValue, chosenCountries, chosenRegions, timeStartsAt, timeEndsAt } = useAppSelector(state => state.companiesFilter);
   const [companies, setCompanies] = useState<ICompany[]>([]);
   const [filteredCompanies, setFilteredCompanies] = useState<ICompany[]>([]);
   const dispatch = useAppDispatch();
+  const { companiesView } = useAppSelector(state => state.home);
 
-  const view = searchParams.get('view');
+  useEffect(() => {
+    const companiesView = localStorage.getItem('companiesView');
+    if (companiesView) {
+      dispatch(setCompaniesView(companiesView));
+    }
+  }, [])
 
   useEffect(() => {
     if (data) {
@@ -102,32 +108,32 @@ const Companies = () => {
     { tabname: CategoriesEnum.CLOSED, quantity: filteredCompanies.filter(el => el.category === CategoriesEnum.CLOSED).length },
   ];
 
-  // console.log(filteredCompanies);
 
   return (
     <>
-      {isLoading || isAddLoading || isDeleteLoading || isRemoveLoading ?
+      {isLoading || isDeleteLoading || isToggleLoading ?
         <div className={styles.preloader}>
           <Preloader />
         </div>
         : <>
-          {(error || addError || deleteError || removeError) ?
+          <CompaniesFilter />
+          {(error || toggleError || deleteError) ?
             <h2 className={styles.error}>Произошла ошибка при загрузке компаний...</h2>
             : <section className={styles.companies}>
               <div className={styles.companies__header}>
                 <Tabs tabs={tabs} activeTabButton={activeTabButton} setActiveTabButton={setActiveTabButton} />
-                <ChangeView />
+                <ChangeView view={companiesView} page='companies' />
               </div>
               <div className={styles.companies__body}>
-                <ul className={clsx(styles.companies__list, { [styles.companies__list_grid]: view === 'grid' })}>
-                  {view === 'list' ?
+                <ul className={clsx(styles.companies__list, { [styles.companies__list_grid]: companiesView === ViewEnum.GRID })}>
+                  {companiesView === ViewEnum.LIST ?
                     companies.map(el =>
-                      <Company key={el.id} name={el.name} legalName={el.legalName} country={el.country} deleteCompany={deleteCompany} addToFavourite={addToFavourite}
-                        region={el.region} direction={el.direction} isFavourite={el.isFavourite} removeFromFavourite={removeFromFavourite} company={el} />
+                      <Company id={el.id} key={el.id} name={el.name} legalName={el.legalName} country={el.country} deleteCompany={deleteCompany} toggleFavourite={toggleFavourite}
+                        region={el.region} direction={el.direction} isFavourite={el.isFavourite} company={el} />
                     )
                     : companies.map(el =>
-                      <CompanyGrid key={el.id} name={el.name} country={el.country} deleteCompany={deleteCompany} addToFavourite={addToFavourite}
-                        region={el.region} direction={el.direction} isFavourite={el.isFavourite} removeFromFavourite={removeFromFavourite} object={el} />
+                      <CompanyGrid key={el.id} id={el.id} name={el.name} country={el.country} deleteCompany={deleteCompany} toggleFavourite={toggleFavourite}
+                        region={el.region} direction={el.direction} isFavourite={el.isFavourite}  object={el} />
                     )
                   }
                 </ul>

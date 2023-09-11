@@ -1,0 +1,135 @@
+
+.item {
+  padding: 24px 24px 30px 24px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &::after{
+    content: '';
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    bottom: 0;
+    right: 0;
+    background-color: #EFF2F7;
+  }
+  &__info{
+    display: flex;
+    align-items: center;
+    column-gap: 24px;
+  }
+  &__avatar{
+  }
+  &__realAvatar > img{
+      width: 64px;
+      height: 64px;
+    }
+  
+  &__mockAvatar{
+    background-color: #E6E7EB;
+    width: 64px;
+    height: 64px;
+  }
+  &__nameInfo {
+  }
+  &__name{
+    font-size: 24px;
+    color: #050504;
+    font-weight: 800;
+    line-height: 133%;
+  }
+  &__nikname{
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 150%;
+    color: #8492A6;
+  }
+  &__actions{
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+  }
+  &__button{
+    border-radius: 5px;
+    background-color: #3C4858;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 15px;
+    color: #fff;
+    font-weight: 400;
+    font-size: 17px;
+  }
+  &__buttonLabel{}
+  &__smallButton{
+    padding: 12px;
+    background-color: inherit;
+    border-radius: 8px;
+    border: 2px solid #3C4858;
+    transition: all 0.3s ease 0s;
+    &:hover {
+      background-color: #3C4858;
+      color: #fff;
+    }
+    &_active {
+      background-color: #3C4858;
+      color: #fff;
+    }
+  }
+  &__additionalActions {
+    padding: 0 5px;
+  }
+    &__additionalActionsButton{
+      font-weight: 800;
+      &:hover {
+        text-decoration: underline;
+        color: #050504;
+      }
+    }
+}
+.disabled {
+  cursor: not-allowed;
+}
+.tabs {
+  display: flex;
+  gap: 16px;
+  padding: 0px 24px;
+    &__button {
+        padding: 12px;
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 150%;
+        height: 100%;
+        position: relative;
+    
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: 1px;
+          left: 0;
+          height: 2px;
+          width: 0%;
+          transition: width 0.3s linear 0s;
+          background-color: #050504;
+          border-radius: 200px 200px 0px 0px;
+        }
+    
+        &:hover {
+          color: #050504;
+    
+          &::after {
+            width: 100%;
+          }
+        }
+    
+        &_active {
+          color: #050504;
+    
+          &::after {
+            width: 100%;
+          }
+        }
+      }
+}
