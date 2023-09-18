@@ -401,7 +401,7 @@
       "name": "Александр Соломонов",
       "position": "Офис менеджер",
       "company": "Global Solutions",
-      "isFavourite": true,
+      "isFavourite": false,
       "avatar": "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000",
       "category": "Запросы"
     },
@@ -425,7 +425,7 @@
       "worktimeStarts": 9,
       "worktimeEnds": 17,
       "direction": "Информационные технологии",
-      "isFavourite": false,
+      "isFavourite": true,
       "category": "Мои компании"
     },
     {

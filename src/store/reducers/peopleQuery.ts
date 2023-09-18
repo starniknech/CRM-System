@@ -38,6 +38,6 @@ export const peopleApi = createApi({
         url: `/people/${id}`,
       }),
       providesTags: result => ['People'],
-    })
+    }),
   })
 })

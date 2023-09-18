@@ -16,10 +16,10 @@ const ChangeView: React.FC<ChangeViewProps> = ({  view, page }) => {
 
   const handleClick = (view: ViewEnum) => {
     if (page === 'people') {
-      window.localStorage.setItem('peopleView', view);
+      window.sessionStorage.setItem('peopleView', view);
       dispatch(setPeopleView(view));
     } else if (page === 'companies') {
-      window.localStorage.setItem('companiesView', view);
+      window.sessionStorage.setItem('companiesView', view);
       dispatch(setCompaniesView(view));
     }
   }

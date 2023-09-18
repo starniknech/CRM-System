@@ -10,6 +10,7 @@ import { IPerson } from '../../../../models/IPerson';
 import { Link } from 'react-router-dom';
 
 interface PersonProps {
+  id: number;
   name: string;
   position: string;
   company: string;
@@ -17,10 +18,9 @@ interface PersonProps {
   avatar: string;
   person: IPerson;
   handleRemovePerson: (person: IPerson) => void;
-  toggleFavouritePerson: (person: IPerson) => void;
-  id: number;
+  handleToggleFavourite: (person: IPerson) => void;
 }
-const Person: React.FC<PersonProps> = ({ id, name, position, company, isFavourite, avatar, handleRemovePerson, person, toggleFavouritePerson }) => {
+const Person: React.FC<PersonProps> = ({ id, name, position, company, isFavourite, avatar, handleRemovePerson, person, handleToggleFavourite }) => {
   const [isOpenMenu, setOpenMenu] = useState<boolean>(false);
 
   const onHandleDotsClick = () => {
@@ -31,7 +31,7 @@ const Person: React.FC<PersonProps> = ({ id, name, position, company, isFavourit
   }
 
   const handlerFavouritePerson = () => {
-    isFavourite ? toggleFavouritePerson({ ...person, isFavourite: false }) : toggleFavouritePerson({ ...person, isFavourite: true });
+    isFavourite ? handleToggleFavourite({ ...person, isFavourite: false }) : handleToggleFavourite({ ...person, isFavourite: true });
   }
 
   return (

@@ -5,7 +5,6 @@ import { CategoriesEnum, ICompany } from '../../../models/ICompany';
 import Tabs from '../../common/Tabs/Tabs';
 import ChangeView from '../../common/ChangeView/ChangeView';
 import Company from './Company/Company';
-import CompanyGrid from './Company/CompanyGrid/CompanyGrid';
 import clsx from 'clsx';
 import useAppSelector from '../../../hooks/useAppSelector';
 import Preloader from '../../common/Preloader/Preloader';
@@ -14,6 +13,7 @@ import useAppDispatch from '../../../hooks/useAppDispatch';
 import CompaniesFilter from '../Filters/CompaniesFilters/CompaniesFilter';
 import { ViewEnum } from '../../common/ChangeView/ViewEnum';
 import { setCompaniesView } from '../../../store/reducers/home';
+import GridElement from '../../common/GridElement/GridElement';
 
 
 const Companies:React.FC = () => {
@@ -28,7 +28,7 @@ const Companies:React.FC = () => {
   const { companiesView } = useAppSelector(state => state.home);
 
   useEffect(() => {
-    const companiesView = localStorage.getItem('companiesView');
+    const companiesView = sessionStorage.getItem('companiesView');
     if (companiesView) {
       dispatch(setCompaniesView(companiesView));
     }
@@ -132,8 +132,9 @@ const Companies:React.FC = () => {
                         region={el.region} direction={el.direction} isFavourite={el.isFavourite} company={el} />
                     )
                     : companies.map(el =>
-                      <CompanyGrid key={el.id} id={el.id} name={el.name} country={el.country} deleteCompany={deleteCompany} toggleFavourite={toggleFavourite}
-                        region={el.region} direction={el.direction} isFavourite={el.isFavourite}  object={el} />
+                      <GridElement key={el.id} id={el.id} name={el.name} country={el.country}
+                        deleteItem={() => deleteCompany(el)} toggleFavourite={(favourite) => toggleFavourite({ ...el, isFavourite: favourite})} isFavourite={el.isFavourite}
+                        region={el.region} direction={el.direction} />
                     )
                   }
                 </ul>
