@@ -1,0 +1,43 @@
+  .button {
+    transition: margin-bottom 0.3s ease 0s;
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 0px;
+
+    &_active {
+      margin-bottom: 16px;
+    }
+
+    &:hover .button__label {
+      color: #3C4858;
+    }
+
+    & .button__label {
+      color: #C2CEDB;
+      transition: color 0.3s ease 0s;
+    }
+
+    &_active .button__label {
+      color: #3C4858;
+    }
+    &__arrow {
+      padding-top: 17px;
+  
+      & svg {
+        transition: all 0.3s ease 0s;
+        transform: translateY(-50%);
+      }
+  
+      &_active svg {
+        transform: translateY(-50%) rotate(180deg);
+      }
+    }
+  
+    &__label {
+      text-transform: uppercase;
+      font-weight: 800;
+      font-size: 14px;
+      line-height: 228.5%;
+    }
+  }

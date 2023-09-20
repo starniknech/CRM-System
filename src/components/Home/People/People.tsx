@@ -9,9 +9,8 @@ import useAppSelector from '../../../hooks/useAppSelector';
 import Tabs from '../../common/Tabs/Tabs';
 import ChangeView from '../../common/ChangeView/ChangeView';
 import PeopleFilters from '../Filters/PeopleFilters/PeopleFilters';
-import useAppDispatch from '../../../hooks/useAppDispatch';
-import { setPeopleView } from '../../../store/reducers/home';
 import GridElement from '../../common/GridElement/GridElement';
+import { useSetView } from '../../../hooks/useSetView';
 
 const People: React.FC = () => {
   const { filteredPeople: data } = useAppSelector(state => state.people)
@@ -21,16 +20,8 @@ const People: React.FC = () => {
   const [activeTabButton, setActiveTabButton] = useState<string>(CategoriesEnum.STAFF);
   const [people, setPeople] = useState<IPerson[]>([]);
   const { peopleView } = useAppSelector(state => state.home);
-  const dispatch = useAppDispatch();
-  const bodySection = useRef<HTMLDivElement>(null);
 
-
-  useEffect(() => {
-    const peopleView = sessionStorage.getItem('peopleView');
-    if (peopleView) {
-      dispatch(setPeopleView(peopleView))
-    }
-  }, [])
+  useSetView('peopleView');
 
   useEffect(() => {
     if (data) {
@@ -75,8 +66,7 @@ const People: React.FC = () => {
                   <Tabs activeTabButton={activeTabButton} setActiveTabButton={setActiveTabButton} tabs={tabs} />
                   <ChangeView view={peopleView} page='people' />
                 </div>
-                {/* <div style={{ height: peopleHeight }} ref={bodySection} className={clsx(styles.body, { [styles.body__scroll]: peopleHeight })}> */}
-                <div ref={bodySection} className={styles.body}>
+                <div className={styles.body}>
                   <div className={styles.people}>
                     <ul className={clsx(styles.peopleList, { [styles.peopleGrid]: peopleView === 'grid' })}>
                       {people.map((person) => {
@@ -94,7 +84,7 @@ const People: React.FC = () => {
                               name={person.name} personCompany={person.company}
                               position={person.position} isFavourite={person.isFavourite}
                               avatar={person.avatar}
-                              deleteItem={() => deletePerson(person)} toggleFavourite={(favourite) => toggleFavourite({ ...person, isFavourite: favourite})}
+                              deleteItem={() => deletePerson(person)} toggleFavourite={(favourite) => toggleFavourite({ ...person, isFavourite: favourite })}
                             />
                           );
                         }

@@ -10,6 +10,8 @@ import { setFiltredPeople } from "../../../../store/reducers/people";
 import { CompaniesEnum, PositionsEnum } from "../../../../models/IPerson";
 import useAppSelector from "../../../../hooks/useAppSelector";
 import CheckItem from "../commonFilters/CheckItem/CheckItem";
+import { useGetSpoilerHeight } from "../../../../hooks/useGetSpoilerHeight";
+import SpoilerButton from "../commonFilters/SpoilerButton/SpoilerButton";
 /* ======================ITEMS============================================================================================ */
 interface ItemCompanyProps {
   name: string;
@@ -64,11 +66,11 @@ const CompanyItem: React.FC<ItemCompanyProps> = ({ name, setChosenCompany, chose
     </li>
   );
 }
-
+/* ==================SPOILERITEM=========================================================================================================== */
 const SpoilerItem: React.FC<SpoilerItemProps> = ({ chosenCompany, chosenPositions, spoiler, index, isOpenSpoiler, handleOpenSpoiler, setChosenCompany, setChosenPositions }) => {
-  const [listHeight, setListHeight] = useState<number>();
   const listRef = useRef<HTMLUListElement>(null);
   const { filteredPeople } = useAppSelector(state => state.people);
+  const listHeight = useGetSpoilerHeight(listRef);
 
   const setPositionsCount = (name: string): number => {
     return filteredPeople.filter(el => el.position === name).length;
@@ -80,20 +82,11 @@ const SpoilerItem: React.FC<SpoilerItemProps> = ({ chosenCompany, chosenPosition
     } else setChosenPositions(actual => [...actual, name]);
   }
 
-  useEffect(() => {
-    if (listRef.current) {
-      setListHeight(listRef.current.getBoundingClientRect().height);
-    }
-  }, [])
+
 
   return (
     <div className={styles.spoiler}>
-      <button
-        onClick={() => handleOpenSpoiler(index)}
-        className={clsx(styles.spoiler__button, { [styles.spoiler__button_active]: isOpenSpoiler })}>
-        <div className={styles.spoiler__label}>{spoiler.label}</div>
-        <div className={clsx(styles.spoiler__arrow, { [styles.spoiler__arrow_active]: isOpenSpoiler })}><MdKeyboardArrowDown /></div>
-      </button>
+      <SpoilerButton label={ spoiler.label} index={index} handleOpenSpoiler={handleOpenSpoiler} isOpenSpoiler={isOpenSpoiler} />
       <div className={clsx(styles.spoiler__collapse, { [styles.spoiler__collapse_active]: isOpenSpoiler })}
         style={isOpenSpoiler ? { height: listHeight } : { height: "0px" }}>
         <ul className={styles.spoiler__list} ref={listRef} >

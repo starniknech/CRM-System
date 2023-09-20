@@ -12,11 +12,11 @@ import { setFinalData } from '../../../store/reducers/companyFilters';
 import useAppDispatch from '../../../hooks/useAppDispatch';
 import CompaniesFilter from '../Filters/CompaniesFilters/CompaniesFilter';
 import { ViewEnum } from '../../common/ChangeView/ViewEnum';
-import { setCompaniesView } from '../../../store/reducers/home';
 import GridElement from '../../common/GridElement/GridElement';
+import { useSetView } from '../../../hooks/useSetView';
 
 
-const Companies:React.FC = () => {
+const Companies: React.FC = () => {
   const { data, isLoading, error } = companyAPI.useFetchCompaniesQuery(100);
   const [deleteCompany, { error: deleteError, isLoading: isDeleteLoading }] = companyAPI.useDeleteCompanyMutation();
   const [toggleFavourite, { error: toggleError, isLoading: isToggleLoading }] = companyAPI.useToggleFavouriteCompaniesMutation();
@@ -27,12 +27,7 @@ const Companies:React.FC = () => {
   const dispatch = useAppDispatch();
   const { companiesView } = useAppSelector(state => state.home);
 
-  useEffect(() => {
-    const companiesView = sessionStorage.getItem('companiesView');
-    if (companiesView) {
-      dispatch(setCompaniesView(companiesView));
-    }
-  }, [])
+  useSetView('companiesView');
 
   useEffect(() => {
     if (data) {
@@ -95,8 +90,8 @@ const Companies:React.FC = () => {
     const favouriteCompanies = filteredCompanies.filter(el => el.isFavourite);
     const nonFavouriteCompanies = filteredCompanies.filter(el => !el.isFavourite);
     const allCompanies = favouriteCompanies.concat(nonFavouriteCompanies);
-    activeTabButton === 'Все' ? setCompanies(allCompanies) : setCompanies(allCompanies.filter(person => person.category === activeTabButton));
-  }, [filteredCompanies, activeTabButton, timeStartsAt, timeEndsAt]);
+    activeTabButton === 'Все' ? setCompanies(allCompanies) : setCompanies(allCompanies.filter(el => el.category === activeTabButton));
+  }, [filteredCompanies, activeTabButton]);
 
   const tabs = [
     { tabname: 'Все', quantity: filteredCompanies.length },
@@ -133,7 +128,7 @@ const Companies:React.FC = () => {
                     )
                     : companies.map(el =>
                       <GridElement key={el.id} id={el.id} name={el.name} country={el.country}
-                        deleteItem={() => deleteCompany(el)} toggleFavourite={(favourite) => toggleFavourite({ ...el, isFavourite: favourite})} isFavourite={el.isFavourite}
+                        deleteItem={() => deleteCompany(el)} toggleFavourite={(favourite) => toggleFavourite({ ...el, isFavourite: favourite })} isFavourite={el.isFavourite}
                         region={el.region} direction={el.direction} />
                     )
                   }

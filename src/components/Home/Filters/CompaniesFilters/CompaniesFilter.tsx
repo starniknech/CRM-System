@@ -8,6 +8,8 @@ import useAppSelector from '../../../../hooks/useAppSelector';
 import useAppDispatch from '../../../../hooks/useAppDispatch';
 import { deleteChosenCountries, deleteChosenRegions, setChosenCountries, setChosenRegions, setSearchValue, setTimeEndsAt, setTimeStartsAt } from '../../../../store/reducers/companyFilters';
 import CheckItem from '../commonFilters/CheckItem/CheckItem';
+import { useGetSpoilerHeight } from '../../../../hooks/useGetSpoilerHeight';
+import SpoilerButton from '../commonFilters/SpoilerButton/SpoilerButton';
 /* ============================================================================================================================= */
 interface SpoilerItemProps {
   name: string;
@@ -16,7 +18,7 @@ interface SpoilerItemProps {
   index: number;
 }
 /* ============================================================================================================================= */
-const WorkTimeItem:React.FC = () => {
+const WorkTimeItem: React.FC = () => {
   const { timeStartsAt, timeEndsAt } = useAppSelector(state => state.companiesFilter);
   const dispatch = useAppDispatch();
   const rangeDistance = 24;
@@ -88,15 +90,9 @@ const WorkTimeItem:React.FC = () => {
 /* ======================================SPOILERITEM=========================================================================== */
 const SpoilerItem: React.FC<SpoilerItemProps> = ({ index, name, isOpenSpoiler, handleOpenSpoiler }) => {
   const { chosenRegions, chosenCountries, finalData } = useAppSelector(state => state.companiesFilter);
-  const [listHeight, setListHeight] = useState<number>();
   const dispatch = useAppDispatch();
   const listRef = useRef<HTMLUListElement>(null);
-
-  useEffect(() => {
-    if (listRef.current) {
-      setListHeight(listRef.current.getBoundingClientRect().height);
-    }
-  }, [])
+  const listHeight = useGetSpoilerHeight(listRef);
 
   const handleAddRegion = (name: string) => {
     chosenRegions.includes(name)
@@ -121,29 +117,25 @@ const SpoilerItem: React.FC<SpoilerItemProps> = ({ index, name, isOpenSpoiler, h
 
   return (
     <div className={styles.spoiler}>
-      <button
-        onClick={() => handleOpenSpoiler(index)}
-        className={clsx(styles.spoiler__button, { [styles.spoiler__button_active]: isOpenSpoiler })}>
-        <div className={styles.spoiler__label}>{name}</div>
-        <div className={clsx(styles.spoiler__arrow, { [styles.spoiler__arrow_active]: isOpenSpoiler })}><MdKeyboardArrowDown /></div>
-      </button>
+      <SpoilerButton index={index} label={name} isOpenSpoiler={isOpenSpoiler} handleOpenSpoiler={handleOpenSpoiler} />
       <div className={clsx(styles.spoiler__collapse, { [styles.spoiler__collapse_active]: isOpenSpoiler })}
         style={isOpenSpoiler ? { height: listHeight } : { height: "0px" }}>
-        {name === 'Время работы' ?
-          <WorkTimeItem />
-          :
-          <ul className={styles.spoiler__list} ref={listRef} >
-            {name === 'По странам' &&
-              countries.map(el =>
-                <CheckItem handleAddItem={handleAddCountry} setCount={setCountriesCount} chosenItems={chosenCountries} name={el} key={el} />
-              )
-            }
-            {name === 'По регионам' &&
-              regions.map(el =>
-                <CheckItem setCount={setRegiosnCount} chosenItems={chosenRegions} handleAddItem={handleAddRegion} name={el} key={el} />
-              )
-            }
-          </ul>}
+
+        <ul className={styles.spoiler__list} ref={listRef} >
+          {name === 'По странам' &&
+            countries.map(el =>
+              <CheckItem handleAddItem={handleAddCountry} setCount={setCountriesCount} chosenItems={chosenCountries} name={el} key={el} />
+            )
+          }
+          {name === 'По регионам' &&
+            regions.map(el =>
+              <CheckItem setCount={setRegiosnCount} chosenItems={chosenRegions} handleAddItem={handleAddRegion} name={el} key={el} />
+            )
+          }
+          {name === 'Время работы' &&
+            <li><WorkTimeItem /></li>
+          }
+        </ul>
       </div>
     </div>
   );

@@ -167,7 +167,7 @@
       "name": "Александр Соломонов",
       "position": "Офис менеджер",
       "company": "Promo Republic",
-      "isFavourite": false,
+      "isFavourite": true,
       "avatar": "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000",
       "category": "Сдельные"
     },
@@ -176,7 +176,7 @@
       "name": "Александр Соломонов",
       "position": "Frontend разработчик",
       "company": "Promo Republic",
-      "isFavourite": false,
+      "isFavourite": true,
       "avatar": "https://e7.pngegg.com/pngimages/799/987/png-clipart-computer-icons-avatar-icon-design-avatar-heroes-computer-wallpaper-thumbnail.png",
       "category": "Сдельные"
     },
@@ -239,7 +239,7 @@
       "name": "Александр Соломонов",
       "position": "Начальник IT отдела",
       "company": "Global Solutions",
-      "isFavourite": true,
+      "isFavourite": false,
       "avatar": "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000",
       "category": "Сдельные"
     },
@@ -320,7 +320,7 @@
       "name": "Мария Иванова",
       "position": "Офис менеджер",
       "company": "Global Solutions",
-      "isFavourite": false,
+      "isFavourite": true,
       "avatar": "https://cdn-icons-png.flaticon.com/512/6596/6596121.png",
       "category": "Архив"
     },
@@ -329,7 +329,7 @@
       "name": "Михаил Бегунов",
       "position": "Охранник",
       "company": "Global Solutions Development",
-      "isFavourite": true,
+      "isFavourite": false,
       "avatar": "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000",
       "category": "Архив"
     },
@@ -473,7 +473,7 @@
       "worktimeStarts": 9,
       "worktimeEnds": 17,
       "direction": "Информационные технологии",
-      "isFavourite": false,
+      "isFavourite": true,
       "category": "Мои компании"
     },
     {
