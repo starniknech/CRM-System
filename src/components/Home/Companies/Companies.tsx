@@ -11,7 +11,7 @@ import Preloader from '../../common/Preloader/Preloader';
 import { setFinalData } from '../../../store/reducers/companyFilters';
 import useAppDispatch from '../../../hooks/useAppDispatch';
 import CompaniesFilter from '../Filters/CompaniesFilters/CompaniesFilter';
-import { ViewEnum } from '../../common/ChangeView/ViewEnum';
+import { ViewEnum } from '../../../models/ViewEnum';
 import GridElement from '../../common/GridElement/GridElement';
 import { useSetView } from '../../../hooks/useSetView';
 
@@ -35,52 +35,32 @@ const Companies: React.FC = () => {
       const filteredCompaniesByWorkTime = data.filter(el => (el.worktimeStarts === timeStartsAt) && (el.worktimeEnds === timeEndsAt));
 
       if (searchValue) {
-        const filteredData = filteredCompaniesByWorkTime.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()))
+        let filteredData = filteredCompaniesByWorkTime.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()))
         if (chosenCountries.length) {
-          const filteredData2 = filteredData.filter(el => chosenCountries.includes(el.country));
-          if (chosenRegions.length) {
-            const filteredData3 = filteredData2.filter(el => chosenRegions.includes(el.region));
-            setFilteredCompanies(filteredData3);
-          } else setFilteredCompanies(filteredData2);
-        } else if (chosenRegions.length) {
-          const filteredData2 = filteredData.filter(el => chosenRegions.includes(el.region));
-          if (chosenCountries.length) {
-            const filteredData3 = filteredData2.filter(el => chosenCountries.includes(el.country));
-            setFilteredCompanies(filteredData3);
-          } else setFilteredCompanies(filteredData2)
-        } else setFilteredCompanies(filteredData);
-
-      } else if (chosenCountries.length) {
-        const filteredData = filteredCompaniesByWorkTime.filter(el => chosenCountries.includes(el.country));
+          filteredData = filteredData.filter(el => chosenCountries.includes(el.country));
+        }
         if (chosenRegions.length) {
-          const filteredData2 = filteredData.filter(el => chosenRegions.includes(el.region));
-          if (searchValue) {
-            const filteredData3 = filteredData2.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()));
-            setFilteredCompanies(filteredData3);
-          } else setFilteredCompanies(filteredData2);
-        } else if (searchValue) {
-          const filteredData2 = filteredData.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()));
-          if (chosenRegions.length) {
-            const filteredData3 = filteredData2.filter(el => chosenRegions.includes(el.region));
-            setFilteredCompanies(filteredData3);
-          } else setFilteredCompanies(filteredData2);
-        } else setFilteredCompanies(filteredData);
-
+          filteredData = filteredData.filter(el => chosenRegions.includes(el.region));
+        }
+        setFilteredCompanies(filteredData);
+      } else if (chosenCountries.length) {
+        let filteredData = filteredCompaniesByWorkTime.filter(el => chosenCountries.includes(el.country));
+        if (searchValue) {
+          filteredData = filteredData.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()))
+        }
+        if (chosenRegions.length) {
+          filteredData = filteredData.filter(el => chosenRegions.includes(el.region));
+        }
+        setFilteredCompanies(filteredData);
       } else if (chosenRegions.length) {
-        const filteredData = filteredCompaniesByWorkTime.filter(el => chosenRegions.includes(el.region));
+        let filteredData = filteredCompaniesByWorkTime.filter(el => chosenRegions.includes(el.region));
+        if (searchValue) {
+          filteredData = filteredData.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()));
+        }
         if (chosenCountries.length) {
-          const filteredData2 = filteredData.filter(el => chosenCountries.includes(el.country));
-          if (searchValue) {
-            const filteredData3 = filteredData2.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()));
-            setFilteredCompanies(filteredData3);
-          } else setFilteredCompanies(filteredData2);
-        } else if (searchValue) {
-          const filteredData2 = filteredData.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()));
-          if (chosenCountries.length) {
-            const filteredData3 = filteredData2.filter(el => chosenCountries.includes(el.country));
-            setFilteredCompanies(filteredData3);
-          } else setFilteredCompanies(filteredData2);
-        } else setFilteredCompanies(filteredData)
+          filteredData = filteredData.filter(el => chosenCountries.includes(el.country));
+        }
+        setFilteredCompanies(filteredData);
       } else setFilteredCompanies(filteredCompaniesByWorkTime);
     }
   }, [timeStartsAt, timeEndsAt, searchValue, chosenCountries, chosenRegions, data]);

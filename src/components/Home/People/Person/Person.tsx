@@ -8,6 +8,7 @@ import { IconContext } from 'react-icons';
 import clsx from 'clsx';
 import { IPerson } from '../../../../models/IPerson';
 import { Link } from 'react-router-dom';
+import { useElemMenu } from '../../../../hooks/useElemMenu';
 
 interface PersonProps {
   id: number;
@@ -21,14 +22,7 @@ interface PersonProps {
   handleToggleFavourite: (person: IPerson) => void;
 }
 const Person: React.FC<PersonProps> = ({ id, name, position, company, isFavourite, avatar, handleRemovePerson, person, handleToggleFavourite }) => {
-  const [isOpenMenu, setOpenMenu] = useState<boolean>(false);
-
-  const onHandleDotsClick = () => {
-    if (!isOpenMenu)
-      setOpenMenu(true);
-    else
-      setOpenMenu(false);
-  }
+  const { isOpenMenu, handleOpenMenu: onHandleDotsClick } = useElemMenu();
 
   const handlerFavouritePerson = () => {
     isFavourite ? handleToggleFavourite({ ...person, isFavourite: false }) : handleToggleFavourite({ ...person, isFavourite: true });

@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
-import { ViewEnum } from "../../components/common/ChangeView/ViewEnum";
+import { ViewEnum } from "../../models/ViewEnum";
 
 
 interface HomeState {

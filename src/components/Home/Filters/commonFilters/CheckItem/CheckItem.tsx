@@ -7,7 +7,6 @@ interface CheckItemProps {
   setCount: (name: string) => number;
   name: string;
   chosenItems: string[];
-  // setChosenItems: React.Dispatch<React.SetStateAction<string[]>>
   handleAddItem: (name: string) => void;
 }
 

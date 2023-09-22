@@ -6,6 +6,7 @@ import { BsChatRightText, BsFillTelephoneFill } from 'react-icons/bs';
 import clsx from 'clsx';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
+import { useElemMenu } from '../../../hooks/useElemMenu';
 
 interface GridElementProps {
   id: number
@@ -22,14 +23,7 @@ interface GridElementProps {
 }
 
 const GridElement: React.FC<GridElementProps> = ({ id, name, avatar, isFavourite, toggleFavourite, personCompany, position, country, region, direction, deleteItem }) => {
-  const [isOpenMenu, setOpenMenu] = useState<boolean>(false);
-
-  const onHandleDotsClick = () => {
-    if (!isOpenMenu)
-      setOpenMenu(true);
-    else
-      setOpenMenu(false);
-  }
+  const { isOpenMenu, handleOpenMenu: onHandleDotsClick} = useElemMenu();
 
   const changeFavourite = () => {
     isFavourite ? toggleFavourite(false) : toggleFavourite(true);

@@ -7,6 +7,7 @@ import { IconContext } from 'react-icons';
 import { ICompany } from '../../../../models/ICompany';
 import clsx from 'clsx';
 import { Link, useLocation } from 'react-router-dom';
+import { useElemMenu } from '../../../../hooks/useElemMenu';
 
 
 interface CompanyProps {
@@ -23,8 +24,8 @@ interface CompanyProps {
 }
 
 const Company: React.FC<CompanyProps> = ({ id, name, legalName, country, region, direction, isFavourite, company, deleteCompany, toggleFavourite }) => {
-  const [isOpenMenu, setOpenMenu] = useState<boolean>(false);
-  const location = useLocation();
+  const { isOpenMenu, handleOpenMenu: onHandleDotsClick } = useElemMenu();
+
 
   const changeFavourite = () => {
     isFavourite ? toggleFavourite({ ...company, isFavourite: false }) : toggleFavourite({ ...company, isFavourite: true });
@@ -49,7 +50,7 @@ const Company: React.FC<CompanyProps> = ({ id, name, legalName, country, region,
         <div className={styles.item__direction}><div>{direction}</div></div>
         <div className={styles.item__actions}>
           <button className={clsx(styles.item__map, styles.disabled)}><FaMapLocationDot /></button>
-          <button onClick={() => isOpenMenu ? setOpenMenu(false) : setOpenMenu(true)} className={styles.item__otherActions}><BiDotsHorizontalRounded /></button>
+          <button onClick={onHandleDotsClick} className={styles.item__otherActions}><BiDotsHorizontalRounded /></button>
           {isOpenMenu && <div className={styles.item__menu}>
             <button onClick={() => deleteCompany(company)} className={styles.item__removeCompany}>Удалить</button></div>}
         </div>

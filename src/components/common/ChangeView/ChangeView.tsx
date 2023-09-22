@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './ChangeView.module.scss';
 import clsx from 'clsx';
-import { ViewEnum } from './ViewEnum';
+import { ViewEnum } from '../../../models/ViewEnum';
 import { AiFillAppstore, AiOutlineUnorderedList } from 'react-icons/ai';
 import useAppDispatch from '../../../hooks/useAppDispatch';
 import { setCompaniesView, setPeopleView } from '../../../store/reducers/home';
@@ -11,7 +11,7 @@ interface ChangeViewProps {
   page: string
 }
 
-const ChangeView: React.FC<ChangeViewProps> = ({  view, page }) => {
+const ChangeView: React.FC<ChangeViewProps> = ({ view, page }) => {
   const dispatch = useAppDispatch();
 
   const handleClick = (view: ViewEnum) => {

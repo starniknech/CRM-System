@@ -86,7 +86,7 @@ const SpoilerItem: React.FC<SpoilerItemProps> = ({ chosenCompany, chosenPosition
 
   return (
     <div className={styles.spoiler}>
-      <SpoilerButton label={ spoiler.label} index={index} handleOpenSpoiler={handleOpenSpoiler} isOpenSpoiler={isOpenSpoiler} />
+      <SpoilerButton label={spoiler.label} index={index} handleOpenSpoiler={handleOpenSpoiler} isOpenSpoiler={isOpenSpoiler} />
       <div className={clsx(styles.spoiler__collapse, { [styles.spoiler__collapse_active]: isOpenSpoiler })}
         style={isOpenSpoiler ? { height: listHeight } : { height: "0px" }}>
         <ul className={styles.spoiler__list} ref={listRef} >
@@ -113,55 +113,34 @@ const PeopleFilters: React.FC = () => {
   useEffect(() => {
     if (data) {
       if (searchValue) {
-        const filteredData = data.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase())) //search
+        let filteredData = data.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase())) //search
         if (chosenCompany) {
-          const filteredData2 = filteredData.filter(el => el.company === chosenCompany)
-          if (chosenPositions.length) {
-            const filteredData3 = filteredData2.filter(item => chosenPositions.includes(item.position))
-            dispatch(setFiltredPeople(filteredData3));
-          } else dispatch(setFiltredPeople(filteredData2));
-        } else if (chosenPositions.length) {
-          const filteredData2 = filteredData.filter(item => chosenPositions.includes(item.position))
-          if (chosenCompany) {
-            const filteredData3 = filteredData2.filter(el => el.company === chosenCompany);
-            dispatch(setFiltredPeople(filteredData3));
-          } else dispatch(setFiltredPeople(filteredData2));
-        } else {
-          dispatch(setFiltredPeople(filteredData))
+          filteredData = filteredData.filter(el => el.company === chosenCompany);
         }
+        if (chosenPositions.length) {
+          filteredData = filteredData.filter(el => chosenPositions.includes(el.position));
+        }
+        dispatch(setFiltredPeople(filteredData));
 
       } else if (chosenCompany) {
-        const filteredData = data.filter(el => el.company === chosenCompany);
+        let filteredData = data.filter(el => el.company === chosenCompany);
         if (chosenPositions.length) {
-          const filteredData2 = filteredData.filter(item => chosenPositions.includes(item.position))
-          if (searchValue) {
-            const filteredData3 = filteredData2.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()))
-            dispatch(setFiltredPeople(filteredData3))
-          } else dispatch(setFiltredPeople(filteredData2))
-        } else if (searchValue) {
-          const filteredData2 = filteredData.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()));
-          if (chosenPositions.length) {
-            const filteredData3 = filteredData2.filter(item => chosenPositions.includes(item.position));
-            dispatch(setFiltredPeople(filteredData3));
-          } else dispatch(setFiltredPeople(filteredData2));
-        } else dispatch(setFiltredPeople(filteredData));
+          filteredData = filteredData.filter(el => chosenPositions.includes(el.position));
+        }
+        if (searchValue) {
+          filteredData = filteredData.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()));
+        }
+        dispatch(setFiltredPeople(filteredData));
 
       } else if (chosenPositions.length) {
-        const filteredData = data.filter(item => chosenPositions.includes(item.position));
+        let filteredData = data.filter(item => chosenPositions.includes(item.position));
         if (chosenCompany) {
-          const filteredData2 = filteredData.filter(el => el.company === chosenCompany);
-          if (searchValue) {
-            const filteredData3 = filteredData2.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()));
-            dispatch(setFiltredPeople(filteredData3));
-          } else dispatch(setFiltredPeople(filteredData2));
-        } else if (searchValue) {
-          const filteredData2 = filteredData.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()));
-          if (chosenCompany) {
-            const filteredData3 = filteredData2.filter(el => el.company === chosenCompany);
-            dispatch(setFiltredPeople(filteredData3));
-          } else dispatch(setFiltredPeople(filteredData2));
-        } else dispatch(setFiltredPeople(filteredData));
-
+          filteredData = filteredData.filter(el => el.company === chosenCompany);
+        }
+        if (searchValue) {
+          filteredData = filteredData.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()));
+        }
+        dispatch(setFiltredPeople(filteredData));
       } else dispatch(setFiltredPeople(data));
     }
   }, [data, searchValue, chosenPositions, chosenCompany])
